@@ -1,39 +1,69 @@
 === Velký mlýn ===
 
-Contributors: automattic
 Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
-
-Requires at least: 4.5
-Tested up to: 5.4
-Requires PHP: 5.6
-Stable tag: 1.0.0
+Requires at least: 6.0
+Tested up to: 7.0
+Requires PHP: 7.4
+Stable tag: 1.1.0
 License: GNU General Public License v2 or later
-License URI: LICENSE
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A starter theme called Velký mlýn.
+The site-specific WordPress theme for the Velký mlýn cultural centre and library in Prague-Libeň.
+
+Website: https://velkymlyn.cz/
+Project contact: pk@velkymlyn.cz
 
 == Description ==
 
-Šablona Velký mlýn
+Velký mlýn is a custom, standalone theme based on Underscores. It provides the
+public website layout, a tailored homepage, event listings, event-detail
+templates, navigation, partner information, and integration points for the
+site's companion plugins.
+
+The Events Calendar and Advanced Custom Fields are required for the event
+features. The homepage can additionally display Mlýn Flexible Slider, Social
+Feed Gallery, and MailPoet content when those plugins and configured shortcodes
+are available.
 
 == Installation ==
 
-1. In your admin panel, go to Appearance > Themes and click the Add New button.
-2. Click Upload Theme and Choose File, then select the theme's .zip file. Click Install Now.
-3. Click Activate to use your new theme right away.
+1. Upload the theme ZIP under Appearance > Themes > Add New > Upload Theme, or copy the `velkymlyn` directory to `wp-content/themes`.
+2. Install and activate The Events Calendar and Advanced Custom Fields.
+3. Activate the Velký mlýn theme.
+4. Assign the primary navigation menu and verify the homepage shortcode IDs.
 
 == Frequently Asked Questions ==
 
-= Does this theme support any plugins? =
+= Is this a general-purpose theme? =
 
-Velký mlýn includes support for WooCommerce and for Infinite Scroll in Jetpack.
+No. It is tailored to the content structure, calendar, branding, and companion
+plugins of the Velký mlýn website.
+
+= Why are README.md and readme.txt both included? =
+
+README.md documents the source repository for developers. This file follows
+the conventional WordPress distribution format and contains release metadata,
+installation notes, credits, and the changelog. The theme metadata displayed
+by WordPress comes from the header in style.css.
 
 == Changelog ==
 
-= 1.0 - May 12 2015 =
-* Initial release
+= 1.1.0 - 2026-08-12 =
+
+* Replaced obsolete Underscores placeholder documentation and package metadata.
+* Documented actual requirements, integrations, development commands, licensing, and release workflow.
+* Documented the shortcode-powered homepage hero.
+* Removed historical asset-recovery reports and tooling from the distributable theme source.
+
+= 1.0.0 =
+
+* Initial custom Velký mlýn theme created by Honza Kopta based on Underscores
 
 == Credits ==
 
-* Based on Underscores https://underscores.me/, (C) 2012-2020 Automattic, Inc., [GPLv2 or later](https://www.gnu.org/licenses/gpl-2.0.html)
-* normalize.css https://necolas.github.io/normalize.css/, (C) 2012-2018 Nicolas Gallagher and Jonathan Neal, [MIT](https://opensource.org/licenses/MIT)
+* Based on Underscores, https://underscores.me/, copyright 2012-2020 Automattic, Inc., GPLv2 or later.
+* normalize.css, https://necolas.github.io/normalize.css/, copyright Nicolas Gallagher and Jonathan Neal, MIT.
+* Slick, https://kenwheeler.github.io/slick/, copyright Ken Wheeler, MIT.
+
+Photographs, logos, partner marks, and other organisation-specific media are
+not granted for reuse by the GPL license applied to the theme code.

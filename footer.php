@@ -17,7 +17,7 @@
 				<div class="row justify-content-center">
 					<div class="col-12 col-lg-3">
 						<span class="nadpis">Knihovna</span>
-						<p><a href="mailto:velkymlyn@mlp.cz">velkymlyn@mlp.cz</a><br><a href="+420 770 130 211">tel: +420 770 130 211</a></p>
+						<p><a href="mailto:velkymlyn@mlp.cz">velkymlyn@mlp.cz</a><br><a href="tel:+420770130211">tel: +420 770 130 211</a></p>
 					</div>
 					<div class="col-12 col-lg-4">
 						<span class="nadpis">Produkce kulturních akcí, propagace:</span>
@@ -34,16 +34,16 @@
 			<div class="container">
 				<div class="row justify-content-center">
                     <div class="col-3">
-						<img src="/wp-content/themes/velkymlyn/image/spolekmlyn.jpg" class="img-fluid" alt="">
+						<img src="<?php echo esc_url( get_theme_file_uri( '/image/spolekmlyn.jpg' ) ); ?>" class="img-fluid" alt="">
 					</div>
 					<div class="col-3">
-						<a href="https://www.praha8.cz/" target="_blank"><img src="/wp-content/themes/velkymlyn/image/mkp.gif" class="img-fluid" alt=""></a>
+						<a href="https://www.praha8.cz/" target="_blank" rel="noopener noreferrer"><img src="<?php echo esc_url( get_theme_file_uri( '/image/mkp.gif' ) ); ?>" class="img-fluid" alt=""></a>
 					</div>
 					<div class="col-3">
-						<a href="https://www.mlp.cz/cz/" target="_blank"><img src="/wp-content/themes/velkymlyn/image/mc8.jpg" class="img-fluid" alt=""></a>
+						<a href="https://www.mlp.cz/cz/" target="_blank" rel="noopener noreferrer"><img src="<?php echo esc_url( get_theme_file_uri( '/image/mc8.jpg' ) ); ?>" class="img-fluid" alt=""></a>
 					</div>
 					<div class="col-3">
-						<a href="https://junior.rozhlas.cz/" target="_blank"><img src="/wp-content/themes/velkymlyn/image/radio.jpg" class="img-fluid" alt=""></a>
+						<a href="https://junior.rozhlas.cz/" target="_blank" rel="noopener noreferrer"><img src="<?php echo esc_url( get_theme_file_uri( '/image/radio.jpg' ) ); ?>" class="img-fluid" alt=""></a>
 					</div>
 				</div>
 			</div>
@@ -53,10 +53,6 @@
 
 	
 </div><!-- #page -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script type="text/javascript" src="/wp-content/themes/velkymlyn/slick/slick.min.js"></script>
 <?php wp_footer(); ?>
 
 </body>

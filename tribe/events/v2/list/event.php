@@ -9,7 +9,7 @@
 
 		$event_image = get_the_post_thumbnail( $event_id, 'three-two', array( 'class' => 'img-fluid' ) );
 		if (!$event_image) {
-			$event_image = '<img width="600" height="400" src="/wp-content/themes/velkymlyn/image/placeholder.jpg" class="img-fluid wp-post-image" alt="" decoding="async" fetchpriority="high">';
+			$event_image = sprintf( '<img width="600" height="400" src="%s" class="img-fluid wp-post-image" alt="" decoding="async" fetchpriority="high">', esc_url( get_theme_file_uri( '/image/placeholder.jpg' ) ) );
 		}
         $event_link = get_permalink($event_id);
         $event_categories = get_the_terms($event_id, 'tribe_events_cat');

@@ -73,7 +73,7 @@ if ( $event_cats && ! is_wp_error($event_cats) ) {
                     <div class="col-6 text-start"><?php echo '<a class="btn btn-primary btn-vstupenky" href="' . esc_url( $website ) . '" target="_blank" rel="noopener">Vstupenky</a>';?>
                     </div>
                     <div class="col-6 text-end">
-                        <img class="img-fluid" src="/wp-content/themes/velkymlyn/image/goout.png" alt="">
+                        <img class="img-fluid" src="<?php echo esc_url( get_theme_file_uri( '/image/goout.png' ) ); ?>" alt="">
                     </div>
                 </div>
                <?php  } ?>

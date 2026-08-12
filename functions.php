@@ -7,9 +7,8 @@
  * @package Velký_mlýn
  */
 
-if ( ! defined( '_S_VERSION' ) ) {
-	// Replace the version number of the theme on each release.
-	define( '_S_VERSION', '1.0.0' );
+if ( ! defined( 'VELKYMLYN_VERSION' ) ) {
+	define( 'VELKYMLYN_VERSION', '1.1.0' );
 }
 
 /**
@@ -138,11 +137,18 @@ add_action( 'widgets_init', 'velkymlyn_widgets_init' );
  * Enqueue scripts and styles.
  */
 function velkymlyn_scripts() {
-	wp_enqueue_style( 'velkymlyn-style', get_stylesheet_uri(), array(), _S_VERSION );
+	wp_enqueue_style( 'velkymlyn-bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', array(), '5.0.2' );
+	wp_enqueue_style( 'velkymlyn-fonts', 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap', array(), null );
+	wp_enqueue_style( 'velkymlyn-bootstrap-icons', 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css', array(), '1.13.1' );
+	wp_enqueue_style( 'velkymlyn-slick', get_theme_file_uri( '/slick/slick.css' ), array(), VELKYMLYN_VERSION );
+	wp_enqueue_style( 'velkymlyn-slick-theme', get_theme_file_uri( '/slick/slick-theme.css' ), array( 'velkymlyn-slick' ), VELKYMLYN_VERSION );
+	wp_enqueue_style( 'velkymlyn-style', get_stylesheet_uri(), array( 'velkymlyn-bootstrap', 'velkymlyn-fonts', 'velkymlyn-bootstrap-icons', 'velkymlyn-slick-theme' ), VELKYMLYN_VERSION );
 	wp_style_add_data( 'velkymlyn-style', 'rtl', 'replace' );
 
-	wp_enqueue_script( 'velkymlyn-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
-	wp_enqueue_script( 'velkymlyn-js', get_template_directory_uri() . '/js/custom.js', array(), _S_VERSION, true );
+	wp_enqueue_script( 'velkymlyn-bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', array(), '5.0.2', true );
+	wp_enqueue_script( 'velkymlyn-slick', get_theme_file_uri( '/slick/slick.min.js' ), array( 'jquery' ), VELKYMLYN_VERSION, true );
+	wp_enqueue_script( 'velkymlyn-navigation', get_template_directory_uri() . '/js/navigation.js', array(), VELKYMLYN_VERSION, true );
+	wp_enqueue_script( 'velkymlyn-js', get_template_directory_uri() . '/js/custom.js', array( 'jquery', 'velkymlyn-bootstrap', 'velkymlyn-slick' ), VELKYMLYN_VERSION, true );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
@@ -206,7 +212,7 @@ add_shortcode('custom_events_list', function () {
 
 		$event_image = get_the_post_thumbnail( $event_id, 'three-two', array( 'class' => 'img-fluid' ) );
 		if (!$event_image) {
-			$event_image = '<img width="600" height="400" src="/wp-content/themes/velkymlyn/image/placeholder.jpg" class="img-fluid wp-post-image" alt="" decoding="async" fetchpriority="high">';
+			$event_image = sprintf( '<img width="600" height="400" src="%s" class="img-fluid wp-post-image" alt="" decoding="async" fetchpriority="high">', esc_url( get_theme_file_uri( '/image/placeholder.jpg' ) ) );
 		}
         $event_link = get_permalink($event_id);
         $event_categories = get_the_terms($event_id, 'tribe_events_cat');

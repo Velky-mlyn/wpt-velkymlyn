@@ -1,70 +1,115 @@
-[![Build Status](https://travis-ci.org/Automattic/_s.svg?branch=master)](https://travis-ci.org/Automattic/_s)
+<p align="center">
+  <a href="https://velkymlyn.cz/">
+    <img src="image/logo_298.png" alt="Velký mlýn" width="520">
+  </a>
+</p>
 
-_s
-===
+# Velký mlýn WordPress theme
 
-Hi. I'm a starter theme called `_s`, or `underscores`, if you like. I'm a theme meant for hacking so don't use me as a Parent Theme. Instead try turning me into the next, most awesome, WordPress theme out there. That's what I'm here for.
+The custom WordPress theme used by [Velký mlýn](https://velkymlyn.cz/), an
+independent cultural centre and library in Prague-Libeň.
 
-My ultra-minimal CSS might make me look like theme tartare but that means less stuff to get in your way when you're designing your awesome theme. Here are some of the other more interesting things you'll find here:
+Project contact: [pk@velkymlyn.cz](mailto:pk@velkymlyn.cz)
 
-* A modern workflow with a pre-made command-line interface to turn your project into a more pleasant experience.
-* A just right amount of lean, well-commented, modern, HTML5 templates.
-* A custom header implementation in `inc/custom-header.php`. Just add the code snippet found in the comments of `inc/custom-header.php` to your `header.php` template.
-* Custom template tags in `inc/template-tags.php` that keep your templates clean and neat and prevent code duplication.
-* Some small tweaks in `inc/template-functions.php` that can improve your theming experience.
-* A script at `js/navigation.js` that makes your menu a toggled dropdown on small screens (like your phone), ready for CSS artistry. It's enqueued in `functions.php`.
-* 2 sample layouts in `sass/layouts/` made using CSS Grid for a sidebar on either side of your content. Just uncomment the layout of your choice in `sass/style.scss`.
-Note: `.no-sidebar` styles are automatically loaded.
-* Smartly organized starter CSS in `style.css` that will help you to quickly get your design off the ground.
-* Full support for `WooCommerce plugin` integration with hooks in `inc/woocommerce.php`, styling override woocommerce.css with product gallery features (zoom, swipe, lightbox) enabled.
-* Licensed under GPLv2 or later. :) Use it to make something cool.
+The theme began with [Underscores (`_s`)](https://underscores.me/) and now
+contains site-specific templates for the homepage, event listings, individual
+calendar events, navigation, contact information, partners, and integrations
+used by the Velký mlýn website. It is a standalone theme, not a child theme or
+a reusable starter theme.
 
-Installation
----------------
+## Requirements
 
-### Requirements
+- WordPress 6.0 or newer
+- PHP 7.4 or newer
+- [The Events Calendar](https://wordpress.org/plugins/the-events-calendar/)
+- [Advanced Custom Fields](https://wordpress.org/plugins/advanced-custom-fields/)
 
-`_s` requires the following dependencies:
+The Events Calendar is required by the event templates and the homepage event
+list. Advanced Custom Fields supplies the `barva_stitku` colour assigned to
+event tags.
 
-- [Node.js](https://nodejs.org/)
-- [Composer](https://getcomposer.org/)
+The production website also uses these companion features:
 
-### Quick Start
+- `mlyn-flexible-slider` for the homepage hero via
+  `[mlyn_slider id="homepage-hero"]`
+- Social Feed Gallery for `[insta-gallery id="0"]`
+- MailPoet for `[mailpoet_form id="1"]`
 
-Clone or download this repository, change its name to something else (like, say, `megatherium-is-awesome`), and then you'll need to do a six-step find and replace on the name in all the templates.
+If an optional shortcode provider is unavailable, its corresponding homepage
+section may be empty. The homepage hero is explicitly hidden when the Mlýn
+Flexible Slider shortcode is unavailable or has no active slides.
 
-1. Search for `'_s'` (inside single quotations) to capture the text domain and replace with: `'megatherium-is-awesome'`.
-2. Search for `_s_` to capture all the functions names and replace with: `megatherium_is_awesome_`.
-3. Search for `Text Domain: _s` in `style.css` and replace with: `Text Domain: megatherium-is-awesome`.
-4. Search for <code>&nbsp;_s</code> (with a space before it) to capture DocBlocks and replace with: <code>&nbsp;Megatherium_is_Awesome</code>.
-5. Search for `_s-` to capture prefixed handles and replace with: `megatherium-is-awesome-`.
-6. Search for `_S_` (in uppercase) to capture constants and replace with: `MEGATHERIUM_IS_AWESOME_`.
+## Installation
 
-Then, update the stylesheet header in `style.css`, the links in `footer.php` with your own information and rename `_s.pot` from `languages` folder to use the theme's slug. Next, update or delete this readme.
+1. Copy or clone this repository to `wp-content/themes/velkymlyn`.
+2. Install and activate the required plugins.
+3. Activate **Velký mlýn** under **Appearance → Themes**.
+4. Assign the primary navigation menu and configure the homepage as needed.
+5. Ensure the companion shortcodes listed above match the IDs configured on
+   the target WordPress site.
 
-### Setup
+This repository contains theme source only. WordPress content, uploads,
+plugin data, secrets, and environment configuration are deliberately excluded.
 
-To start using all the tools that come with `_s`  you need to install the necessary Node.js and Composer dependencies :
+## Development
+
+PHP syntax checks are available through Composer:
 
 ```sh
-$ composer install
-$ npm install
+composer install
+composer lint:php
 ```
 
-### Available CLI commands
+With WP-CLI installed, regenerate the translation template with:
 
-`_s` comes packed with CLI commands tailored for WordPress theme development :
+```sh
+wp i18n make-pot . languages/velkymlyn.pot
+```
 
-- `composer lint:wpcs` : checks all PHP files against [PHP Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/php/).
-- `composer lint:php` : checks all PHP files for syntax errors.
-- `composer make-pot` : generates a .pot file in the `languages/` directory.
-- `npm run compile:css` : compiles SASS files to css.
-- `npm run compile:rtl` : generates an RTL stylesheet.
-- `npm run watch` : watches all SASS files and recompiles them to css when they change.
-- `npm run lint:scss` : checks all SASS files against [CSS Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/css/).
-- `npm run lint:js` : checks all JavaScript files against [JavaScript Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/javascript/).
-- `npm run bundle` : generates a .zip archive for distribution, excluding development and system files.
+JavaScript linting, RTL stylesheet generation, and creation of an installable
+ZIP are available through npm:
 
-Now you're ready to go! The next step is easy to say, but harder to do: make an awesome WordPress theme. :)
+```sh
+npm install
+npm run lint:js
+npm run compile:rtl
+npm run bundle
+```
 
-Good luck!
+Generated dependencies and archives are excluded from Git. The checked-in
+`style.css` and `style-rtl.css` are runtime assets and must remain in the theme.
+
+## Repository structure
+
+- `front-page.php` — homepage layout and companion shortcodes
+- `functions.php` — theme setup, assets, event list, and event filters
+- `tribe-events/` and `tribe/` — The Events Calendar template overrides
+- `template-parts/` — reusable WordPress content templates
+- `inc/` — theme setup helpers and optional Jetpack compatibility
+- `image/`, `js/`, and `slick/` — bundled presentation assets
+- `readme.txt` — WordPress-style release metadata and changelog
+
+## Publishing notes
+
+`README.md` is the developer-facing GitHub document. `readme.txt` is retained
+separately because it follows the conventional WordPress distribution format;
+WordPress itself reads the authoritative theme header from `style.css`.
+
+Before publishing a release, update the version consistently in `style.css`,
+`style-rtl.css`, `functions.php`, `package.json`, and `readme.txt`, then run the
+syntax checks and build the ZIP.
+
+## Credits and licensing
+
+Theme PHP, CSS, and JavaScript are licensed under the GNU General Public
+License v2 or later; see [LICENSE](LICENSE).
+
+- Based on [Underscores](https://underscores.me/), © 2012–2020 Automattic,
+  Inc., GPL-2.0-or-later
+- Includes [normalize.css](https://necolas.github.io/normalize.css/), © Nicolas
+  Gallagher and Jonathan Neal, MIT
+- Includes [Slick](https://kenwheeler.github.io/slick/), © Ken Wheeler, MIT
+
+Photographs, logos, partner marks, and other organisation-specific media in
+`image/` are not granted for reuse by the GPL license applied to the theme
+code. Confirm the relevant rights before redistributing those assets.

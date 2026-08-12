@@ -14,80 +14,18 @@
 
 get_header();
 
-$banner_slides = [];
-
-// ACF can be temporarily unavailable while the site is being restored.
-if (function_exists('get_field')) {
-	$args = [
-					'post_type' => 'tribe_events',
-					'posts_per_page' => -1,
-					'orderby' => 'meta_value',
-					'meta_key' => '_EventStartDate',
-					'order' => 'ASC',
-					'meta_query' => [
-						[
-							'key' => '_EventStartDate',
-							'value' => current_time('Y-m-d H:i:s'),
-							'compare' => '>=',
-							'type' => 'DATETIME'
-						],
-						[
-							'key' => 'banner_promo',
-							'value' => '1',
-							'compare' => '='
-						]
-					]
-	];
-
-	$promo_query = new WP_Query($args);
-
-	while ($promo_query->have_posts()) {
-		$promo_query->the_post();
-		$background_image = get_field('foto_banner');
-
-		// Support all ACF image return formats, even though this field uses URL.
-		if (is_array($background_image)) {
-			$background_image = $background_image['url'] ?? '';
-		} elseif (is_numeric($background_image)) {
-			$background_image = wp_get_attachment_image_url((int) $background_image, 'full');
-		}
-
-		$background_image = is_string($background_image) ? trim($background_image) : '';
-
-		// A promoted event without a usable image must not become an empty slide.
-		if ($background_image === '') {
-			continue;
-		}
-
-		$tags = get_the_tags();
-		$banner_slides[] = [
-			'background_image' => $background_image,
-			'tag_label' => $tags && !is_wp_error($tags) ? $tags[0]->name : '',
-			'title' => get_the_title(),
-			'date' => tribe_get_start_date(null, false, 'j. n. Y \o\d H:i'),
-			'url' => get_permalink(),
-		];
-	}
-
-	wp_reset_postdata();
-}
+$homepage_banner = shortcode_exists('mlyn_slider')
+	? do_shortcode('[mlyn_slider id="homepage-hero"]')
+	: '';
 ?>
 	<main id="primary" class="site-main">
-		<?php if ($banner_slides) : ?>
+		<?php if ($homepage_banner !== '') : ?>
 		<section id="banner">
 			<div class="custom-container container">
-				<div class="row slick-wrap">
-					<?php foreach ($banner_slides as $slide) : ?>
-						<div class="banner-wrapper col-12 text-center align-items-center d-flex flex-column justify-content-center"
-							style="background-image: url('<?php echo esc_url($slide['background_image']); ?>');">
-							<?php if ($slide['tag_label'] !== '') : ?>
-								<span class="label inter-300"><?php echo esc_html($slide['tag_label']); ?></span>
-							<?php endif; ?>
-							<p class="name"><?php echo esc_html($slide['title']); ?></p>
-							<p class="date mb-4 mt-2"><?php echo esc_html($slide['date']); ?></p>
-							<a class="btn btn-primary" href="<?php echo esc_url($slide['url']); ?>">Vstupenky</a>
-						</div>
-					<?php endforeach; ?>
+				<div class="row">
+					<div class="col-12 px-0">
+						<?php echo $homepage_banner; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -108,7 +46,7 @@ if (function_exists('get_field')) {
 					</div>
 					<div class="col-12 col-lg-3">
 						<span class="nadpis">Rychlý kontakt</span>
-						<p><a href="tel:+420777904464">+420 777 904 464</a><br><a href="/kontakt">Další kontakty <i class="bi bi-link-45deg"></i></a></p>
+						<p><a href="tel:+420777904464">+420 777 904 464</a><br><a href="<?php echo esc_url( home_url( '/kontakt/' ) ); ?>">Další kontakty <i class="bi bi-link-45deg"></i></a></p>
 					</div>
 				</div>
 			</div>
@@ -121,7 +59,7 @@ if (function_exists('get_field')) {
 					</div>
 				<?php echo do_shortcode('[custom_events_list]');?>
 				<div class="col-12 mt-5 text-center">
-					<a class="btn-program" href="/kalendar-akci">Celý program <i class="bi bi-arrow-right-short"></i></a>
+					<a class="btn-program" href="<?php echo esc_url( home_url( '/kalendar-akci/' ) ); ?>">Celý program <i class="bi bi-arrow-right-short"></i></a>
 				</div>
 				</div>
 			</div>
@@ -130,7 +68,7 @@ if (function_exists('get_field')) {
 			<div class="container custom-container">
 				<div class="row">
 					<div class="col-lg-6 col-12">
-                        <img src="/wp-content/themes/velkymlyn/image/onas.jpg" class="img-fluid" alt="">
+                        <img src="<?php echo esc_url( get_theme_file_uri( '/image/onas.jpg' ) ); ?>" class="img-fluid" alt="">
 					</div>
 					<div class="col-lg-6 col-12 text">
 						<p>
@@ -162,7 +100,7 @@ Všechny prostory je také po domluvě možné využít pro <span>soukromé akce
 			<div class="container custom-container">
 				<div class="row">
 					<div class="col-12">
-						<img src="/wp-content/themes/velkymlyn/image/instagram.jpg" class="img-fluid" alt="">
+						<?php echo do_shortcode('[insta-gallery id="0"]'); ?>
 					</div>
 				</div>
 			</div>

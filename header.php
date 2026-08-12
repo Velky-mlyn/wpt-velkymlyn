@@ -16,18 +16,11 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="/wp-content/themes/velkymlyn/slick/slick.css"/>
-	<link rel="stylesheet" type="text/css" href="/wp-content/themes/velkymlyn/slick/slick-theme.css"/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="manifest" href="/site.webmanifest" />
+	<link rel="icon" type="image/svg+xml" href="<?php echo esc_url( get_theme_file_uri( '/favicon.svg' ) ); ?>">
+	<link rel="apple-touch-icon" href="<?php echo esc_url( get_theme_file_uri( '/web-app-manifest-192x192.png' ) ); ?>">
+	<link rel="manifest" href="<?php echo esc_url( get_theme_file_uri( '/site.webmanifest' ) ); ?>">
 
 <?php wp_head(); ?>
 </head>
@@ -38,8 +31,8 @@
     <div class="container custom-container">
         <div class="d-flex align-items-end justify-content-between">
             <div class="site-branding">
-                <a href="/">
-                    <img src="/wp-content/themes/velkymlyn/image/logo_298.png" class="img-fluid logo" alt="Velký Mlýn Logo">
+                <a href="<?php echo esc_url( home_url( '/' ) ); ?>">
+                    <img src="<?php echo esc_url( get_theme_file_uri( '/image/logo_298.png' ) ); ?>" class="img-fluid logo" alt="<?php esc_attr_e( 'Velký mlýn', 'velkymlyn' ); ?>">
                 </a>
             </div>
 

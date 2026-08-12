@@ -1,14 +1,15 @@
 /*!
 Theme Name: Velký mlýn
-Theme URI: http://underscores.me/
+Theme URI: https://velkymlyn.cz/
 Author: Honza Kopta
 Author URI: https://www.honzakopta.cz
-Description: Šablona Velký mlýn
-Version: 1.0.0
-Tested up to: 5.4
-Requires PHP: 5.6
+Description: Custom theme for the Velký mlýn cultural centre and library in Prague-Libeň.
+Version: 1.1.0
+Requires at least: 6.0
+Tested up to: 7.0
+Requires PHP: 7.4
 License: GNU General Public License v2 or later
-License URI: LICENSE
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: velkymlyn
 Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
 
@@ -1392,7 +1393,7 @@ p{
 
 
 .entry-header {
-    background-image: url('/wp-content/themes/velkymlyn/image/ptb.jpeg');
+    background-image: url('image/ptb.jpeg');
     background-size:cover;
 
     background-position: center center;
