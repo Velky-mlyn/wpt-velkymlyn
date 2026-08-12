@@ -15,7 +15,7 @@
 get_header();
 
 $homepage_banner = shortcode_exists('mlyn_slider')
-	? do_shortcode('[mlyn_slider id="homepage-hero"]')
+	? do_shortcode('[mlyn_slider id="homepage-banner"]')
 	: '';
 ?>
 	<main id="primary" class="site-main">
