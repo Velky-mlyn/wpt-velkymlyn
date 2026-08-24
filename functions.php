@@ -8,7 +8,7 @@
  */
 
 if ( ! defined( 'VELKYMLYN_VERSION' ) ) {
-	define( 'VELKYMLYN_VERSION', '1.1.0' );
+	define( 'VELKYMLYN_VERSION', '1.2.0' );
 }
 
 /**

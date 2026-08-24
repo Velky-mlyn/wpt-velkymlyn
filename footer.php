@@ -12,7 +12,10 @@
 ?>
 
 	<footer id="colophon" class="site-footer">
-		<section id="basic-info">
+		<?php if ( function_exists( 'mlyn_render_footer' ) ) : ?>
+			<?php echo mlyn_render_footer(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php else : ?>
+		<section id="footer-contacts">
 			<div class="container custom-container">
 				<div class="row justify-content-center">
 					<div class="col-12 col-lg-3">
@@ -49,6 +52,7 @@
 			</div>
 
 		</section>
+		<?php endif; ?>
 	</footer><!-- #colophon -->
 
 	

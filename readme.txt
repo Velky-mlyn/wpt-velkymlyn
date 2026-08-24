@@ -4,7 +4,7 @@ Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-com
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,9 +21,10 @@ templates, navigation, partner information, and integration points for the
 site's companion plugins.
 
 The Events Calendar and Advanced Custom Fields are required for the event
-features. The homepage can additionally display Mlýn Flexible Slider, Social
-Feed Gallery, and MailPoet content when those plugins and configured shortcodes
-are available.
+features. Mlýn Configurable Footer manages the shared contacts and partner
+logos. The homepage can additionally display Mlýn Flexible Slider, Social Feed
+Gallery, and MailPoet content when those plugins and configured shortcodes are
+available.
 
 == Installation ==
 
@@ -47,6 +48,12 @@ installation notes, credits, and the changelog. The theme metadata displayed
 by WordPress comes from the header in style.css.
 
 == Changelog ==
+
+= 1.2.0 - 2026-08-24 =
+
+* Integrated Mlýn Configurable Footer for administrator-managed contact columns and partner logos.
+* Retained the legacy footer markup as an emergency fallback when the plugin is inactive.
+* Removed the duplicate `basic-info` ID from the homepage footer fallback.
 
 = 1.1.0 - 2026-08-12 =
 

@@ -32,6 +32,8 @@ The production website also uses these companion features:
 
 - `mlyn-flexible-slider` for the homepage hero via
   `[mlyn_slider id="homepage-hero"]`
+- `mlyn-configurable-footer` for the shared contact and partner sections via
+  `mlyn_render_footer()`; the template retains legacy static fallback markup
 - Social Feed Gallery for `[insta-gallery id="0"]`
 - MailPoet for `[mailpoet_form id="1"]`
 
