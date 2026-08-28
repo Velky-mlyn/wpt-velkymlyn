@@ -1461,23 +1461,179 @@ p{
     }   
 }
 
-.btn-event{
-    border-radius: 0px!important;
-    text-transform: uppercase!important;
-    font-size:0.8rem;
+.events-filter {
+	width: 100%;
+	margin: .75rem 0 2rem;
+	border: 1px solid #d5d9dc;
+	background: #fff;
 }
 
-.btn-all {
-    background-color:#000!important;
-    color:white!important;
+.events-filter__summary {
+	display: flex !important;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	min-height: 3.25rem;
+	padding: .75rem 1rem !important;
+	color: var(--primary-color);
+	font-weight: 600;
+	cursor: pointer;
+	list-style: none;
 }
 
-.btn-event:hover{
-      filter: brightness(80%); /* na kliknutí lehce ztmaví */
-
+.events-filter__summary::-webkit-details-marker {
+	display: none;
 }
-.btn-event {
-  transition: filter 0.2s ease-in-out;
+
+.events-filter__summary:hover {
+	background: var(--light-color);
+}
+
+.events-filter__summary:focus-visible {
+	outline: 2px solid var(--primary-color);
+	outline-offset: -2px;
+}
+
+.events-filter__summary-meta {
+	display: inline-flex;
+	align-items: center;
+	gap: .75rem;
+}
+
+.events-filter__count {
+	padding: .15rem .55rem !important;
+	border-radius: 999px;
+	background: var(--primary-color);
+	color: #fff;
+	font-size: .75rem;
+	font-weight: 500;
+}
+
+.events-filter__chevron--open,
+.events-filter__panel[open] .events-filter__chevron--closed {
+	display: none;
+}
+
+.events-filter__panel[open] .events-filter__chevron--open {
+	display: inline-block;
+}
+
+.events-filter__form {
+	padding: 1rem !important;
+	border-top: 1px solid #d5d9dc !important;
+}
+
+.events-filter__form fieldset {
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.events-filter__options {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: .5rem;
+}
+
+.events-filter__option {
+	display: flex;
+	align-items: center;
+	gap: .55rem;
+	min-height: 2.5rem;
+	margin: 0 !important;
+	padding: .45rem .65rem !important;
+	border: 1px solid #d5d9dc !important;
+	background: #fff !important;
+	color: var(--black-color) !important;
+	font-size: .85rem;
+	line-height: 1.25;
+	cursor: pointer;
+}
+
+.events-filter__option:hover {
+	border-color: var(--primary-color);
+	background: var(--light-color);
+}
+
+.events-filter__option--all {
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+.events-filter__option:has(input:checked) {
+	border-color: var(--primary-color);
+	background: var(--light-color);
+	color: var(--primary-color);
+	font-weight: 600;
+}
+
+.events-filter__option input {
+	flex: 0 0 auto;
+	width: 1rem;
+	height: 1rem;
+	margin: 0;
+	accent-color: var(--primary-color);
+}
+
+.events-filter__option:focus-within {
+	outline: 2px solid var(--primary-color);
+	outline-offset: 1px;
+}
+
+.events-filter__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 1rem;
+	margin-top: 1rem !important;
+}
+
+.tribe-events .tribe-events-c-search__button,
+.tribe-events .events-filter__submit {
+	border-color: var(--primary-color) !important;
+	background-color: var(--primary-color) !important;
+	color: #fff !important;
+	transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.tribe-events .tribe-events-c-search__button:hover,
+.tribe-events .events-filter__submit:hover {
+	border-color: color-mix(in srgb, var(--primary-color) 82%, #000) !important;
+	background-color: color-mix(in srgb, var(--primary-color) 82%, #000) !important;
+}
+
+.tribe-events .tribe-events-c-search__button:active,
+.tribe-events .events-filter__submit:active {
+	border-color: color-mix(in srgb, var(--primary-color) 68%, #000) !important;
+	background-color: color-mix(in srgb, var(--primary-color) 68%, #000) !important;
+}
+
+.tribe-events .tribe-events-c-search__button:focus-visible,
+.tribe-events .events-filter__submit:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: -4px;
+	box-shadow: 0 0 0 3px var(--primary-color);
+}
+
+.tribe-events .tribe-events-c-search__button:disabled,
+.tribe-events .events-filter__submit:disabled {
+	cursor: not-allowed;
+	opacity: .55;
+}
+
+.events-filter__clear {
+	color: var(--primary-color) !important;
+	font-size: .85rem;
+	font-weight: 600;
+	text-decoration: underline !important;
+	text-underline-offset: 3px;
+}
+
+@media screen and (max-width: 575px) {
+	.events-filter__options {
+		grid-template-columns: 1fr;
+	}
 }
 
 .tribe-events-calendar-list > h2:not(:first-of-type) {

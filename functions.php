@@ -137,18 +137,23 @@ add_action( 'widgets_init', 'velkymlyn_widgets_init' );
  * Enqueue scripts and styles.
  */
 function velkymlyn_scripts() {
+	$style_path          = get_stylesheet_directory() . '/style.css';
+	$style_version       = file_exists( $style_path ) ? filemtime( $style_path ) : VELKYMLYN_VERSION;
+	$custom_js_path      = get_theme_file_path( '/js/custom.js' );
+	$custom_js_version   = file_exists( $custom_js_path ) ? filemtime( $custom_js_path ) : VELKYMLYN_VERSION;
+
 	wp_enqueue_style( 'velkymlyn-bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', array(), '5.0.2' );
 	wp_enqueue_style( 'velkymlyn-fonts', 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap', array(), null );
 	wp_enqueue_style( 'velkymlyn-bootstrap-icons', 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css', array(), '1.13.1' );
 	wp_enqueue_style( 'velkymlyn-slick', get_theme_file_uri( '/slick/slick.css' ), array(), VELKYMLYN_VERSION );
 	wp_enqueue_style( 'velkymlyn-slick-theme', get_theme_file_uri( '/slick/slick-theme.css' ), array( 'velkymlyn-slick' ), VELKYMLYN_VERSION );
-	wp_enqueue_style( 'velkymlyn-style', get_stylesheet_uri(), array( 'velkymlyn-bootstrap', 'velkymlyn-fonts', 'velkymlyn-bootstrap-icons', 'velkymlyn-slick-theme' ), VELKYMLYN_VERSION );
+	wp_enqueue_style( 'velkymlyn-style', get_stylesheet_uri(), array( 'velkymlyn-bootstrap', 'velkymlyn-fonts', 'velkymlyn-bootstrap-icons', 'velkymlyn-slick-theme' ), $style_version );
 	wp_style_add_data( 'velkymlyn-style', 'rtl', 'replace' );
 
 	wp_enqueue_script( 'velkymlyn-bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', array(), '5.0.2', true );
 	wp_enqueue_script( 'velkymlyn-slick', get_theme_file_uri( '/slick/slick.min.js' ), array( 'jquery' ), VELKYMLYN_VERSION, true );
 	wp_enqueue_script( 'velkymlyn-navigation', get_template_directory_uri() . '/js/navigation.js', array(), VELKYMLYN_VERSION, true );
-	wp_enqueue_script( 'velkymlyn-js', get_template_directory_uri() . '/js/custom.js', array( 'jquery', 'velkymlyn-bootstrap', 'velkymlyn-slick' ), VELKYMLYN_VERSION, true );
+	wp_enqueue_script( 'velkymlyn-js', get_template_directory_uri() . '/js/custom.js', array( 'jquery', 'velkymlyn-bootstrap', 'velkymlyn-slick' ), $custom_js_version, true );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
@@ -273,60 +278,235 @@ add_shortcode('custom_events_list', function () {
 });
 
 
-// Vykreslení vlastního filtru pod vyhledávací bar (jen tagy použité u událostí)
-add_action( 'tribe_template_after_include:events/v2/components/events-bar', function() {
-    $selected_tag = isset($_GET['event_tag']) ? sanitize_text_field($_GET['event_tag']) : '';
+/**
+ * Return the tags currently used by published events.
+ */
+function velkymlyn_get_event_tag_terms() {
+	static $tags = null;
 
-    // Vezmeme jen štítky, které se používají u tribe_events
-    $tags = get_terms([
-        'taxonomy'   => 'post_tag',
-        'hide_empty' => true,
-        'object_ids' => get_posts([
-            'post_type'      => 'tribe_events',
-            'fields'         => 'ids',
-            'posts_per_page' => -1,
-        ]),
-    ]);
+	if ( null !== $tags ) {
+		return $tags;
+	}
 
-    if ( $tags && ! is_wp_error($tags) ) {
-        echo '<div class="events-filter mt-2 mb-4 d-flex flex-wrap gap-2">';
+	$event_ids = get_posts(
+		array(
+			'post_type'      => 'tribe_events',
+			'post_status'    => 'publish',
+			'fields'         => 'ids',
+			'posts_per_page' => -1,
+		)
+	);
+	$tags      = get_terms(
+		array(
+			'taxonomy'   => 'post_tag',
+			'hide_empty' => true,
+			'object_ids' => $event_ids,
+			'orderby'    => 'name',
+			'order'      => 'ASC',
+		)
+	);
 
-        // Tlačítko "Všechny"
-        $is_active = $selected_tag === '';
-        echo '<a href="/kalendar-akci/" class="btn p-2 pb-1 pt-1 btn-all btn-event">Všechny události</a>';
+	return is_wp_error( $tags ) ? array() : $tags;
+}
 
-        // Ostatní tagy
-        foreach ( $tags as $tag ) {
-            $is_active = $selected_tag === $tag->slug;
+/**
+ * Return the event-tag slugs selected in the current calendar request.
+ *
+ * TEC's AJAX requests carry the visible calendar URL inside a `url` request
+ * value, so read both the direct query string and the View URL object.
+ */
+function velkymlyn_get_selected_event_tags( $view = null ) {
+	$raw_tags = null;
 
-            // ACF barva štítku (pokud existuje)
-            $barva = get_field('barva_stitku', 'post_tag_' . $tag->term_id);
+	if ( $view && method_exists( $view, 'get_url_object' ) ) {
+		$url = $view->get_url_object();
+		if ( $url && method_exists( $url, 'get_query_arg' ) ) {
+			$raw_tags = $url->get_query_arg( 'event_tags', null );
+		}
+	}
 
-            if ( $barva ) {
-                $style = $is_active
-                    ? 'style="background-color:'.$barva.';border-color:'.$barva.';color:#fff;"'
-                    : 'style="background-color:'.$barva.'; border-color:'.$barva.';color:#fff;"';
-                $class = 'btn btn-event';
-            } else {
-                $class = 'btn btn-event ' . ( $is_active ? 'btn-primary' : 'btn-outline-primary' );
-                $style = '';
-            }
+	if ( null === $raw_tags ) {
+		$raw_tags = tribe_get_request_var( 'event_tags', null );
+	}
 
-            $url = add_query_arg('event_tag', $tag->slug);
-            echo '<a href="' . esc_url($url) . '" class="'.$class.' p-2 pb-1 pt-1" '.$style.'>';
-            echo esc_html($tag->name);
-            echo '</a>';
-        }
+	if ( null === $raw_tags ) {
+		$request_url = tribe_get_request_var( 'url', '' );
+		if ( is_string( $request_url ) && '' !== $request_url ) {
+			$query = wp_parse_url( $request_url, PHP_URL_QUERY );
+			if ( is_string( $query ) ) {
+				parse_str( $query, $request_args );
+				$raw_tags = isset( $request_args['event_tags'] ) ? $request_args['event_tags'] : null;
+			}
+		}
+	}
 
-        echo '</div>';
-    }
-});
+	if ( is_string( $raw_tags ) ) {
+		$raw_tags = explode( ',', $raw_tags );
+	}
 
-// Úprava hlavního dotazu událostí podle GET parametru
-add_action( 'pre_get_posts', function( $query ) {
-    if ( ! is_admin() && $query->is_main_query() && function_exists('tribe_is_event_query') && tribe_is_event_query() ) {
-        if ( ! empty( $_GET['event_tag'] ) ) {
-            $query->set( 'tag', sanitize_text_field( $_GET['event_tag'] ) );
-        }
-    }
-});
+	if ( ! is_array( $raw_tags ) ) {
+		return array();
+	}
+
+	$tags = array();
+	foreach ( array_slice( wp_unslash( $raw_tags ), 0, 100 ) as $raw_tag ) {
+		if ( is_scalar( $raw_tag ) ) {
+			$tags[] = sanitize_title( (string) $raw_tag );
+		}
+	}
+	$tags = array_filter( array_unique( $tags ) );
+	$available_tag_slugs = wp_list_pluck( velkymlyn_get_event_tag_terms(), 'slug' );
+
+	// Selecting every available tag is equivalent to applying no filter.
+	if ( $available_tag_slugs && ! array_diff( $available_tag_slugs, $tags ) ) {
+		return array();
+	}
+
+	return array_values( $tags );
+}
+
+/**
+ * Keep selected tags in TEC-generated search, navigation, and view URLs.
+ */
+function velkymlyn_add_event_tags_to_view_url_args( $query_args, $view = null ) {
+	$selected_tags = velkymlyn_get_selected_event_tags( $view );
+
+	if ( $selected_tags ) {
+		$query_args['event_tags'] = $selected_tags;
+	}
+
+	return $query_args;
+}
+add_filter( 'tribe_events_views_v2_url_query_args', 'velkymlyn_add_event_tags_to_view_url_args', 10, 2 );
+add_filter( 'tribe_events_views_v2_view_url_query_args', function( $query_args, $view_slug, $view ) {
+	return velkymlyn_add_event_tags_to_view_url_args( $query_args, $view );
+}, 10, 3 );
+add_filter( 'tribe_events_views_v2_publicly_visible_views_query_args', 'velkymlyn_add_event_tags_to_view_url_args', 10, 1 );
+
+/**
+ * Match events carrying any of the selected tags in every TEC V2 view.
+ */
+add_filter( 'tribe_events_views_v2_view_repository_args', function( $repository_args, $context, $view ) {
+	$selected_tags = velkymlyn_get_selected_event_tags( $view );
+
+	if ( $selected_tags ) {
+		$term_ids = get_terms(
+			array(
+				'taxonomy'   => 'post_tag',
+				'hide_empty' => false,
+				'slug'       => $selected_tags,
+				'fields'     => 'ids',
+			)
+		);
+		$event_ids = is_wp_error( $term_ids ) ? array() : get_objects_in_term( $term_ids, 'post_tag' );
+		$event_ids = is_wp_error( $event_ids ) ? array() : array_map( 'intval', $event_ids );
+		$event_ids = array_values( array_unique( $event_ids ) );
+
+		if ( isset( $repository_args['post__in'] ) && is_array( $repository_args['post__in'] ) ) {
+			$event_ids = array_values( array_intersect( $repository_args['post__in'], $event_ids ) );
+		}
+
+		$repository_args['post__in'] = $event_ids ? $event_ids : array( 0 );
+	}
+
+	return $repository_args;
+}, 10, 3 );
+
+/**
+ * Render an expandable checkbox filter containing tags used by events.
+ */
+function velkymlyn_render_event_tag_filters( $file, $name, $template ) {
+	$tags = velkymlyn_get_event_tag_terms();
+
+	if ( ! $tags ) {
+		return;
+	}
+
+	$selected_tags      = velkymlyn_get_selected_event_tags();
+	$context            = tribe_context();
+	$view_slug          = $context->get( 'view', 'list' );
+	$keyword            = $context->get( 'keyword', '' );
+	$event_display_mode = $context->get( 'event_display_mode', '' );
+	$view_url           = $template && method_exists( $template, 'get' ) ? $template->get( 'url', '', false ) : '';
+	$request_uri        = $view_url ? $view_url : ( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '' );
+	$request_path       = wp_parse_url( $request_uri, PHP_URL_PATH );
+	$calendar_path      = '/' . trim( tribe_get_option( 'eventsSlug', 'events' ), '/' ) . '/';
+
+	if ( is_string( $request_path ) && 0 === strpos( trailingslashit( $request_path ), $calendar_path ) ) {
+		$form_action = home_url( $request_path );
+		$request_query = wp_parse_url( $request_uri, PHP_URL_QUERY );
+		$clear_args = array();
+		if ( is_string( $request_query ) ) {
+			parse_str( $request_query, $clear_args );
+		}
+		unset( $clear_args['event_tag'], $clear_args['event_tags'], $clear_args['tag'] );
+		$clear_url = $clear_args ? add_query_arg( $clear_args, $form_action ) : $form_action;
+	} else {
+		$form_action = tribe_events_get_url( array( 'eventDisplay' => $view_slug ) );
+		$clear_url   = remove_query_arg( array( 'event_tag', 'event_tags', 'tag' ), $form_action );
+	}
+
+	$grid_date = $template && method_exists( $template, 'get' ) ? $template->get( 'grid_date', '' ) : '';
+	if ( 'month' === $view_slug && is_string( $grid_date ) && preg_match( '/^\d{4}-\d{2}/', $grid_date, $matches ) ) {
+		$form_action = tribe_events_get_url(
+			array(
+				'eventDisplay' => 'month',
+				'eventDate'    => $matches[0],
+			)
+		);
+		$clear_url = $form_action;
+	}
+
+	if ( $keyword ) {
+		$clear_url = add_query_arg( 'tribe-bar-search', $keyword, $clear_url );
+	}
+	if ( 'past' === $event_display_mode ) {
+		$clear_url = add_query_arg( 'eventDisplay', 'past', $clear_url );
+	}
+	?>
+	<div class="events-filter">
+		<details class="events-filter__panel"<?php echo $selected_tags ? ' open' : ''; ?>>
+			<summary class="events-filter__summary">
+				<span><?php esc_html_e( 'Filtrovat podle štítků', 'velkymlyn' ); ?></span>
+				<span class="events-filter__summary-meta">
+					<?php if ( $selected_tags ) : ?>
+						<span class="events-filter__count"><?php echo esc_html( sprintf( __( 'Vybráno: %d', 'velkymlyn' ), count( $selected_tags ) ) ); ?></span>
+					<?php endif; ?>
+					<i class="bi bi-chevron-down events-filter__chevron events-filter__chevron--closed" aria-hidden="true"></i>
+					<i class="bi bi-chevron-up events-filter__chevron events-filter__chevron--open" aria-hidden="true"></i>
+				</span>
+			</summary>
+			<form class="events-filter__form" action="<?php echo esc_url( $form_action ); ?>" method="get">
+				<?php if ( $keyword ) : ?>
+					<input type="hidden" name="tribe-bar-search" value="<?php echo esc_attr( $keyword ); ?>">
+				<?php endif; ?>
+				<?php if ( 'past' === $event_display_mode ) : ?>
+					<input type="hidden" name="eventDisplay" value="past">
+				<?php endif; ?>
+				<fieldset>
+					<legend class="screen-reader-text"><?php esc_html_e( 'Štítky událostí', 'velkymlyn' ); ?></legend>
+					<div class="events-filter__options">
+						<label class="events-filter__option events-filter__option--all">
+							<input type="checkbox" class="events-filter__all" <?php checked( ! $selected_tags ); ?>>
+							<span><?php esc_html_e( 'Všechny', 'velkymlyn' ); ?></span>
+						</label>
+						<?php foreach ( $tags as $tag ) : ?>
+							<label class="events-filter__option" for="event-tag-<?php echo esc_attr( (string) $tag->term_id ); ?>">
+								<input id="event-tag-<?php echo esc_attr( (string) $tag->term_id ); ?>" class="events-filter__tag" type="checkbox" name="event_tags[]" value="<?php echo esc_attr( $tag->slug ); ?>" <?php checked( ! $selected_tags || in_array( $tag->slug, $selected_tags, true ) ); ?>>
+								<span><?php echo esc_html( $tag->name ); ?></span>
+							</label>
+						<?php endforeach; ?>
+					</div>
+				</fieldset>
+				<div class="events-filter__actions">
+					<button class="tribe-common-c-btn events-filter__submit" type="submit"><?php esc_html_e( 'Použít filtry', 'velkymlyn' ); ?></button>
+					<?php if ( $selected_tags ) : ?>
+						<a class="events-filter__clear" href="<?php echo esc_url( $clear_url ); ?>"><?php esc_html_e( 'Zrušit filtry', 'velkymlyn' ); ?></a>
+					<?php endif; ?>
+				</div>
+			</form>
+		</details>
+	</div>
+	<?php
+}
+add_action( 'tribe_template_after_include:events/v2/components/events-bar', 'velkymlyn_render_event_tag_filters', 10, 3 );
