@@ -1,8 +1,6 @@
 <?php
   $event_id = $event->ID;
-        $event_day = tribe_get_start_date($event_id, false, 'l'); // pondělí
-        $event_date = tribe_get_start_date($event_id, false, 'j.n.');
-        $event_time = tribe_get_start_time($event_id) . ' - ' . tribe_get_end_time($event_id);
+		$event_schedule = velkymlyn_get_event_schedule_html( $event );
         $event_title = get_the_title($event_id);
 		$event_excerpt = wp_trim_words( get_the_excerpt( $event_id ), 20, '...' );
         $event_excerpt_mobile = wp_trim_words( get_the_excerpt( $event_id ), 5, '...' );
@@ -19,9 +17,7 @@
         <div class="event-card d-flex flex-wrap align-items-center border-bottom pt-1 pb-1 mb-0">
 			<div class="row align-items-center justify-content-center">
 				<div class="event-date text-start col-lg-2 col-12 mb-3">
-					<div class="text-lowercase fw-normal"><?= esc_html($event_day) ?></div>
-					<div class="datum fs-2"><?= esc_html($event_date) ?></div>
-					<div class="small"><?= esc_html($event_time) ?></div>
+					<?php echo $event_schedule; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</div>
 
 				<div class="event-image pe-4 p-3 col-lg-3 col-12">

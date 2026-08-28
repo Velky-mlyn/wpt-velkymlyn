@@ -4,7 +4,7 @@ Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-com
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,12 @@ installation notes, credits, and the changelog. The theme metadata displayed
 by WordPress comes from the header in style.css.
 
 == Changelog ==
+
+= 1.4.1 - 2026-08-28 =
+
+* Fixed List View event cards to show explicit start and end dates and times for multi-day events.
+* Replaced empty all-day time ranges with a clear all-day label.
+* Reused the corrected schedule formatting in homepage event cards.
 
 = 1.4.0 - 2026-08-28 =
 

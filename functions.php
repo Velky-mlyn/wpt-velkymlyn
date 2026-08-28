@@ -8,7 +8,7 @@
  */
 
 if ( ! defined( 'VELKYMLYN_VERSION' ) ) {
-	define( 'VELKYMLYN_VERSION', '1.4.0' );
+	define( 'VELKYMLYN_VERSION', '1.4.1' );
 }
 
 /**
@@ -197,6 +197,77 @@ add_action( 'after_setup_theme', function() {
     add_image_size( 'three-two', 600, 400, true ); // 600x400px, hard crop, 3:2 ratio
 });
 
+/**
+ * Render a compact, explicit schedule for an event card.
+ *
+ * Single-day events retain the existing weekday, date, and time layout.
+ * Multi-day events show separate start and end boundaries so their times
+ * cannot be mistaken for a same-day time range.
+ *
+ * @param int|WP_Post $event Event ID or post object.
+ * @return string
+ */
+function velkymlyn_get_event_schedule_html( $event ) {
+	$event_id = is_object( $event ) && isset( $event->ID ) ? (int) $event->ID : absint( $event );
+	if ( ! $event_id ) {
+		return '';
+	}
+
+	$start_day      = tribe_get_start_date( $event_id, false, 'Y-m-d' );
+	$end_day        = tribe_get_end_date( $event_id, false, 'Y-m-d' );
+	$is_multi_day   = $start_day !== $end_day;
+	$is_all_day     = tribe_event_is_all_day( $event_id );
+	$start_datetime = tribe_get_start_date( $event_id, false, 'c' );
+	$end_datetime   = tribe_get_end_date( $event_id, false, 'c' );
+
+	ob_start();
+	if ( ! $is_multi_day ) {
+		$event_day  = tribe_get_start_date( $event_id, false, 'l' );
+		$event_date = tribe_get_start_date( $event_id, false, 'j.n.' );
+		?>
+		<div class="text-lowercase fw-normal"><?php echo esc_html( $event_day ); ?></div>
+		<div class="datum fs-2"><time datetime="<?php echo esc_attr( $start_day ); ?>"><?php echo esc_html( $event_date ); ?></time></div>
+		<div class="small">
+			<?php if ( $is_all_day ) : ?>
+				<?php esc_html_e( 'Celý den', 'velkymlyn' ); ?>
+			<?php else : ?>
+				<time datetime="<?php echo esc_attr( $start_datetime ); ?>"><?php echo esc_html( tribe_get_start_time( $event_id ) ); ?></time>
+				<span aria-hidden="true"> – </span>
+				<time datetime="<?php echo esc_attr( $end_datetime ); ?>"><?php echo esc_html( tribe_get_end_time( $event_id ) ); ?></time>
+			<?php endif; ?>
+		</div>
+		<?php
+		return (string) ob_get_clean();
+	}
+
+	$start_weekday = tribe_get_start_date( $event_id, false, 'l' );
+	$end_weekday   = tribe_get_end_date( $event_id, false, 'l' );
+	$start_date    = tribe_get_start_date( $event_id, false, 'j. n. Y' );
+	$end_date      = tribe_get_end_date( $event_id, false, 'j. n. Y' );
+	?>
+	<div class="event-date__weekdays text-lowercase fw-normal"><?php echo esc_html( $start_weekday . ' – ' . $end_weekday ); ?></div>
+	<div class="event-date__range">
+		<div class="event-date__boundary">
+			<span class="event-date__label"><?php esc_html_e( 'Od', 'velkymlyn' ); ?></span>
+			<time datetime="<?php echo esc_attr( $start_datetime ); ?>">
+				<span><?php echo esc_html( $start_date ); ?></span>
+				<?php if ( ! $is_all_day ) : ?><span class="event-date__boundary-time"><?php echo esc_html( tribe_get_start_time( $event_id ) ); ?></span><?php endif; ?>
+			</time>
+		</div>
+		<div class="event-date__boundary">
+			<span class="event-date__label"><?php esc_html_e( 'Do', 'velkymlyn' ); ?></span>
+			<time datetime="<?php echo esc_attr( $end_datetime ); ?>">
+				<span><?php echo esc_html( $end_date ); ?></span>
+				<?php if ( ! $is_all_day ) : ?><span class="event-date__boundary-time"><?php echo esc_html( tribe_get_end_time( $event_id ) ); ?></span><?php endif; ?>
+			</time>
+		</div>
+	</div>
+	<?php if ( $is_all_day ) : ?><div class="small event-date__all-day"><?php esc_html_e( 'Celý den', 'velkymlyn' ); ?></div><?php endif; ?>
+	<?php
+
+	return (string) ob_get_clean();
+}
+
 add_shortcode('custom_events_list', function () {
     $output = '';
     $events = tribe_get_events([
@@ -213,9 +284,7 @@ add_shortcode('custom_events_list', function () {
 
     foreach ($events as $event) {
         $event_id = $event->ID;
-        $event_day = tribe_get_start_date($event_id, false, 'l'); // pondělí
-        $event_date = tribe_get_start_date($event_id, false, 'j.n.');
-        $event_time = tribe_get_start_time($event_id) . ' - ' . tribe_get_end_time($event_id);
+		$event_schedule = velkymlyn_get_event_schedule_html( $event );
         $event_title = get_the_title($event_id);
 		$event_excerpt = wp_trim_words( get_the_excerpt( $event_id ), 20, '...' );
         $event_excerpt_mobile = wp_trim_words( get_the_excerpt( $event_id ), 5, '...' );
@@ -232,9 +301,7 @@ add_shortcode('custom_events_list', function () {
         <div class="event-card d-flex flex-wrap align-items-center border-bottom pt-1 pb-1 mb-0">
 			<div class="row align-items-center justify-content-center">
 				<div class="event-date text-start col-lg-2 col-12 mb-3">
-					<div class="text-lowercase fw-normal"><?= esc_html($event_day) ?></div>
-					<div class="datum fs-2"><?= esc_html($event_date) ?></div>
-					<div class="small"><?= esc_html($event_time) ?></div>
+					<?php echo $event_schedule; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</div>
 
 				<div class="event-image pe-4 p-3 col-lg-3 col-12">
