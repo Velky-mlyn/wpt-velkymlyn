@@ -1480,10 +1480,6 @@ p{
   transition: filter 0.2s ease-in-out;
 }
 
-.tribe-events-header__events-bar {
-    display: none!important;
-}
-
 .tribe-events-calendar-list > h2:not(:first-of-type) {
     margin-top: 2rem;
 }
