@@ -85,6 +85,7 @@ Generated dependencies and archives are excluded from Git. The checked-in
 
 - `front-page.php` — homepage layout and companion shortcodes
 - `functions.php` — theme setup, assets, event list, and event filters
+- `inc/page-hero.php` — per-page slider assignment and image fallbacks
 - `tribe-events/` and `tribe/` — The Events Calendar template overrides
 - `template-parts/` — reusable WordPress content templates
 - `inc/` — theme setup helpers and optional Jetpack compatibility

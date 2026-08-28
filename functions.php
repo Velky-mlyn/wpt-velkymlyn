@@ -8,7 +8,7 @@
  */
 
 if ( ! defined( 'VELKYMLYN_VERSION' ) ) {
-	define( 'VELKYMLYN_VERSION', '1.3.0' );
+	define( 'VELKYMLYN_VERSION', '1.4.0' );
 }
 
 /**
@@ -165,6 +165,11 @@ add_action( 'wp_enqueue_scripts', 'velkymlyn_scripts' );
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';
+
+/**
+ * Page-specific hero slider and image fallbacks.
+ */
+require get_template_directory() . '/inc/page-hero.php';
 
 /**
  * Custom template tags for this theme.

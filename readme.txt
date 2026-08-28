@@ -4,7 +4,7 @@ Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-com
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,12 @@ installation notes, credits, and the changelog. The theme metadata displayed
 by WordPress comes from the header in style.css.
 
 == Changelog ==
+
+= 1.4.0 - 2026-08-28 =
+
+* Added per-page controls for replacing the image hero with a Mlýn Flexible Slider.
+* Added automatic fallback from an unavailable slider to the page Featured Image, configured Custom Header, or built-in global theme image.
+* Preserved visible page titles and the existing homepage slider behaviour.
 
 = 1.3.0 - 2026-08-28 =
 
