@@ -1,0 +1,102 @@
+/* Keep the curated homepage legible and recognisable in the editor. */
+.editor-styles-wrapper {
+	--primary-color: #47687b;
+	--light-color: #f2f6f8;
+	--black-color: #1e1e1e;
+	font-family: "Inter", sans-serif;
+}
+
+.editor-styles-wrapper #basic-info {
+	background: var(--light-color);
+	padding: 1.5rem 2rem;
+}
+
+.editor-styles-wrapper #basic-info h1,
+.editor-styles-wrapper #program h2 {
+	color: var(--primary-color);
+}
+
+.editor-styles-wrapper .homepage-about-section .homepage-about-copy {
+	background: var(--primary-color);
+	color: #fff;
+	padding: 5rem;
+}
+
+.editor-styles-wrapper .homepage-about-section .homepage-about-grid {
+	gap: 0;
+}
+
+.editor-styles-wrapper .homepage-about-section .homepage-about-grid > .wp-block-column {
+	box-sizing: border-box;
+	flex: 0 0 50%;
+	width: 50%;
+}
+
+.editor-styles-wrapper .homepage-about-section .homepage-about-grid > .wp-block-column:first-child {
+	padding-right: 12px;
+	padding-left: 12px;
+}
+
+.editor-styles-wrapper .homepage-about-section .homepage-about-image,
+.editor-styles-wrapper .homepage-about-section .homepage-about-image img {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	object-fit: cover;
+}
+
+.editor-styles-wrapper .homepage-newsletter-section {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 960px;
+	margin-right: auto;
+	margin-left: auto;
+	padding-right: 1rem;
+	padding-left: 1rem;
+}
+
+.editor-styles-wrapper .homepage-newsletter-section .mailpoet_form_columns {
+	display: flex;
+	flex-wrap: nowrap;
+}
+
+.editor-styles-wrapper .homepage-newsletter-section .mailpoet_form_column {
+	display: flex;
+	flex: 1 1 0;
+	flex-direction: column;
+}
+
+.editor-styles-wrapper .homepage-newsletter-section .mailpoet_form_column:not(:first-child) {
+	margin-left: 20px;
+}
+
+.editor-styles-wrapper .homepage-newsletter-section p {
+	color: var(--primary-color);
+	font-size: 1.6rem !important;
+	font-weight: 200;
+}
+
+@media only screen and (max-width: 781px) {
+	.editor-styles-wrapper .homepage-about-section .homepage-about-copy {
+		padding: 2rem;
+	}
+
+	.editor-styles-wrapper .homepage-about-section .homepage-about-grid > .wp-block-column {
+		flex-basis: 100%;
+		width: 100%;
+	}
+
+	.editor-styles-wrapper .homepage-newsletter-section .mailpoet_form_columns {
+		display: block;
+	}
+
+	.editor-styles-wrapper .homepage-newsletter-section .mailpoet_form_column:not(:first-child) {
+		margin-left: 0;
+	}
+}
+
+.editor-styles-wrapper .homepage-integration-notice,
+.editor-styles-wrapper .components-placeholder {
+	border: 1px dashed #849aa4;
+	background: #f8fafb;
+}

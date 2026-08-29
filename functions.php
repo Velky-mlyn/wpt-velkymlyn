@@ -8,7 +8,7 @@
  */
 
 if ( ! defined( 'VELKYMLYN_VERSION' ) ) {
-	define( 'VELKYMLYN_VERSION', '1.4.1' );
+	define( 'VELKYMLYN_VERSION', '1.5.0' );
 }
 
 /**
@@ -44,6 +44,11 @@ function velkymlyn_setup() {
 		* @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
 		*/
 	add_theme_support( 'post-thumbnails' );
+
+	// Match the front end in the block editor and enable wide block alignment.
+	add_theme_support( 'editor-styles' );
+	add_editor_style( 'editor-style.css' );
+	add_theme_support( 'align-wide' );
 
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menus(
@@ -172,6 +177,11 @@ require get_template_directory() . '/inc/custom-header.php';
 require get_template_directory() . '/inc/page-hero.php';
 
 /**
+ * Curated homepage block editing experience.
+ */
+require get_template_directory() . '/inc/homepage-editor.php';
+
+/**
  * Custom template tags for this theme.
  */
 require get_template_directory() . '/inc/template-tags.php';
@@ -268,7 +278,7 @@ function velkymlyn_get_event_schedule_html( $event ) {
 	return (string) ob_get_clean();
 }
 
-add_shortcode('custom_events_list', function () {
+function velkymlyn_render_upcoming_events() {
     $output = '';
     $events = tribe_get_events([
         'posts_per_page' => 4,
@@ -347,7 +357,8 @@ add_shortcode('custom_events_list', function () {
     }
 
     return ob_get_clean();
-});
+}
+add_shortcode( 'custom_events_list', 'velkymlyn_render_upcoming_events' );
 
 
 /**

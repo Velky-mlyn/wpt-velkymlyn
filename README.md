@@ -19,7 +19,7 @@ a reusable starter theme.
 
 ## Requirements
 
-- WordPress 6.0 or newer
+- WordPress 6.7 or newer
 - PHP 7.4 or newer
 - [The Events Calendar](https://wordpress.org/plugins/the-events-calendar/)
 - [Advanced Custom Fields](https://wordpress.org/plugins/advanced-custom-fields/)
@@ -30,23 +30,25 @@ event tags.
 
 The production website also uses these companion features:
 
-- `mlyn-flexible-slider` for the homepage hero via
-  `[mlyn_slider id="homepage-hero"]`
+- `mlyn-flexible-slider` for the homepage hero via the Mlýn Slider block
 - `mlyn-configurable-footer` for the shared contact and partner sections via
   `mlyn_render_footer()`; the template retains legacy static fallback markup
-- Social Feed Gallery for `[insta-gallery id="0"]`
-- MailPoet for `[mailpoet_form id="1"]`
+- Mlýn Social Feed Curator and Social Feed Gallery for the social-feed block
+- MailPoet for its native subscription-form block
 
-If an optional shortcode provider is unavailable, its corresponding homepage
+If an optional block provider is unavailable, its corresponding homepage
 section may be empty. The homepage hero is explicitly hidden when the Mlýn
-Flexible Slider shortcode is unavailable or has no active slides.
+Flexible Slider plugin is unavailable or has no active slides.
 
 ## Installation
 
 1. Copy or clone this repository to `wp-content/themes/velkymlyn`.
 2. Install and activate the required plugins.
 3. Activate **Velký mlýn** under **Appearance → Themes**.
-4. Assign the primary navigation menu and configure the homepage as needed.
+4. Assign the primary navigation menu and select a static front page.
+5. For an existing site, replace the old front-page content with the **Velký
+   mlýn homepage** pattern before deploying `front-page.php`. The pattern is
+   initial content; subsequent edits are stored on the page in the database.
 5. Ensure the companion shortcodes listed above match the IDs configured on
    the target WordPress site.
 
@@ -83,7 +85,9 @@ Generated dependencies and archives are excluded from Git. The checked-in
 
 ## Repository structure
 
-- `front-page.php` — homepage layout and companion shortcodes
+- `front-page.php` — renders the block content stored on the assigned homepage
+- `patterns/homepage.php` — initial locked homepage section layout
+- `inc/homepage-editor.php` — homepage block, allowlist, and editor curation
 - `functions.php` — theme setup, assets, event list, and event filters
 - `inc/page-hero.php` — per-page slider assignment and image fallbacks
 - `tribe-events/` and `tribe/` — The Events Calendar template overrides

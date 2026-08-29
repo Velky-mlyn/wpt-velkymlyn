@@ -4,13 +4,13 @@ Theme URI: https://velkymlyn.cz/
 Author: Honza Kopta
 Author URI: https://www.honzakopta.cz
 Description: Custom theme for the Velký mlýn cultural centre and library in Prague-Libeň.
-Version: 1.4.1
-Requires at least: 6.0
+Version: 1.5.0
+Requires at least: 6.7
 Tested up to: 7.0
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: Velký mlýn
+Text Domain: velkymlyn
 Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
 
 This theme, like WordPress, is licensed under the GPL.
@@ -404,7 +404,6 @@ select,
 optgroup,
 textarea {
 	color: #404040;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 	font-size: 1rem;
 	line-height: 1.5;
 }
@@ -416,10 +415,6 @@ h4,
 h5,
 h6 {
 	clear: both;
-}
-
-p {
-	margin-bottom: 1.5em;
 }
 
 dfn,
@@ -750,7 +745,7 @@ textarea {
 
 .post,
 .page {
-	margin: 0 0 1.5em;
+	margin: 0 0 0;
 }
 
 .updated:not(.published) {
@@ -959,4 +954,895 @@ textarea {
 	margin-right: auto;
 	margin-left: auto;
 	margin-bottom: 1.5em;
+}
+
+/*------ CUSTOM CSS ------*/
+
+:root {
+  --primary-color: #47687B;
+  --light-color: #F2F6F8;
+  --primary-font: "Inter", sans-serif;
+  --black-color:#1e1e1e;
+}
+
+html {
+	font-size: 18px;
+}
+
+* {
+	font-family: var(--primary-font)!important;
+}
+
+
+p {
+	margin-bottom: 0px;
+}
+
+.btn-primary {
+	text-transform: uppercase;
+	font-weight: 200;
+	background-color:var(--primary-color);
+	color:white!important;
+	border-radius: 0!important;
+	border:0!important;
+	padding:7px 30px;
+}
+
+.btn-primary:hover {
+	background-color:var(--light-color);
+	color:var(--primary-color)!important;
+}
+
+.custom-container {
+  max-width: 1600px; /* or whatever value you want */
+}
+
+
+#banner {
+	.banner-wrapper {
+		background-size: cover;
+		min-height:370px;
+		color:white;
+		position:relative;
+		background-position: center 35%;
+
+		.label {
+			font-weight:200;
+			font-size: 1.6rem;
+			text-transform: uppercase;
+		}
+		.name {
+			font-weight: 600;
+			font-size: 2.2rem;
+
+		}
+		.date {
+			font-size: 1.8rem;
+			font-weight:300;
+			letter-spacing: 1px;
+
+		}
+
+	}
+	.banner-wrapper::before {
+		content:'';
+		position:absolute;
+		width:100%;
+		height:100%;
+		background-color: rgba(71, 104, 123,0.7);
+		top:0;
+		right:0;
+		z-index:20;
+	}
+	.banner-wrapper * {
+		z-index:30;
+		position:relative;
+	}
+}
+
+#basic-info .container{
+	padding:0.5rem 2rem 1rem 2rem;
+	background-color: var(--light-color);
+
+	h1{
+		font-size: 1.9rem;
+		font-weight:200;
+		color:var(--primary-color);
+	}
+	span{
+		color:var(--primary-color);
+		font-weight: 700;
+		margin-bottom: 0.4rem;
+		display: block;
+	}
+	p, a{
+		color:var(--black-color);
+		font-weight:300;
+	}
+
+}
+
+footer #footer-contacts .container{
+	padding:1.5rem 2rem 1rem 2rem;
+	background-color: var(--light-color);
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+.event-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.event-date {
+  text-align: right;
+
+  .datum {
+	font-weight: 500!important;
+  }
+}
+
+.event-date__weekdays {
+	font-size: .85rem;
+}
+
+.event-date__range {
+	display: grid;
+	gap: .35rem;
+	margin: .35rem 0;
+}
+
+.event-date__boundary {
+	display: grid;
+	grid-template-columns: 1.5rem minmax(0, 1fr);
+	gap: .35rem;
+	align-items: baseline;
+}
+
+.event-date__label {
+	color: var(--primary-color);
+	font-size: .7rem;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.event-date__boundary time {
+	display: flex;
+	flex-wrap: wrap;
+	gap: .1rem .4rem;
+	font-size: .9rem;
+	font-weight: 500;
+	line-height: 1.25;
+}
+
+.event-date__boundary-time {
+	font-size: .8rem;
+	font-weight: 400;
+}
+
+.event-date__all-day {
+	margin-right: 1.85rem;
+}
+
+.event-image img {
+  height: auto;
+  border-radius: 4px;
+}
+
+.event-category {
+  background-color: #406579;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.event-title a {
+  font-size: 1.4rem;
+  text-decoration: underline;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color:var(--black-color)!important;
+display: block;
+}
+
+
+.event-title:hover a {
+	text-decoration: none;
+}
+
+.event-description {
+  font-size: 1rem;
+  color: var(--black-color)!important;
+
+}
+
+.event-tag {
+	background-color:var(--primary-color);
+	color:white!important;
+	font-size:0.75rem;
+	font-weight: 200;
+}
+
+.folkova-mlynice{
+	background-color: #E96B76;
+}
+
+.seniorska-setkavani-ve-mlyne {
+	background-color:var(--primary-color)!important;
+}
+
+#program{
+
+h2{
+	font-size: 1.7rem;
+	text-transform: uppercase;
+	font-weight: normal;
+	color:var(--primary-color);
+			line-height:1.7rem;
+
+}
+.btn-program {
+	font-weight: 600;
+	font-size:1.6rem;
+	color:var(--primary-color);
+}
+
+}
+
+.logo {
+	max-height:75px;
+	padding-top:0.5rem;
+	padding-bottom:0.2rem;
+}
+
+
+/* SLICK ****/
+
+.slick-dotted.slick-slider {
+	margin-bottom:0px;
+}
+
+.slick-dots {
+	bottom: 20px;
+}
+
+.slick-dots li button:before {
+	font-size:18px;
+	color: #f0f2f3!important;
+}
+
+
+.site-header {
+    padding: 10px 20px 15px 20px;
+}
+
+.header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.main-navigation #primary-menu {
+    display: flex;
+}
+
+.main-navigation #primary-menu > li {
+    margin-left: 40px; /* default spacing */
+}
+
+.main-navigation #primary-menu > li:nth-last-child(-n+2) {
+    margin-left: 20px; /* smaller spacing for last two */
+}
+
+.main-navigation #primary-menu > li:last-child {
+    margin-left: 0; /* remove margin from very last */
+}
+
+.main-navigation a {
+    color: #849AA4; /* adjust to match your screenshot */
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.main-navigation {
+	width:max-content;
+}
+
+.main-navigation a:hover {
+    color: var(--primary-color); /* hover color */
+}
+
+.header-social a {
+    font-size: 1.2rem;
+    color: #5f7b85;
+}
+
+.header-social a:hover {
+    color: #004b60;
+}
+
+#omlyne {
+	margin-top: 7rem;
+	.text {
+		background-color: var(--primary-color);
+		color:white;
+		padding:5rem;
+		text-align: justify;
+		font-weight: 300;
+		font-size:1.1rem;
+		span {
+			text-decoration: underline;
+		}
+	}
+}
+
+/* Curated Gutenberg homepage. */
+.homepage-blocks > .wp-block-group {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.homepage-blocks .homepage-section__inner,
+.homepage-blocks #banner,
+.homepage-blocks #omlyne,
+.homepage-blocks #insta {
+	max-width: 1600px;
+}
+
+.homepage-blocks #basic-info .homepage-section__inner {
+	padding: .5rem 2rem 1rem;
+	background-color: var(--light-color);
+}
+
+.homepage-blocks #basic-info h1 {
+	margin-bottom: 1.5rem;
+}
+
+.homepage-blocks #basic-info .homepage-basic-grid {
+	display: grid;
+	grid-template-columns: 3fr 4fr 3fr;
+	gap: 2rem;
+	max-width: 1100px;
+	margin: 0 auto;
+}
+
+.homepage-blocks #basic-info .nadpis {
+	margin-bottom: .4rem !important;
+	color: var(--primary-color);
+	font-weight: 500;
+}
+
+.homepage-blocks #program {
+	max-width: 1200px;
+	padding: 3rem 1rem 0;
+}
+
+.homepage-blocks #program > h2 {
+	margin-bottom: 1.5rem;
+}
+
+.homepage-blocks #program .wp-block-buttons {
+	margin-top: 3rem;
+}
+
+.homepage-blocks #program .wp-block-button__link {
+	border: 0;
+	color: var(--primary-color);
+	font-size: 1.6rem;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.homepage-blocks #omlyne .homepage-about-grid {
+	gap: 0;
+}
+
+.homepage-blocks #omlyne .homepage-about-grid > .wp-block-column {
+	box-sizing: border-box;
+	flex: 0 0 50%;
+	width: 50%;
+}
+
+.homepage-blocks #omlyne .homepage-about-grid > .wp-block-column:first-child {
+	padding-left: 12px;
+	padding-right: 12px;
+}
+
+.homepage-blocks #omlyne .homepage-about-image,
+.homepage-blocks #omlyne .homepage-about-image img {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	object-fit: cover;
+}
+
+.homepage-blocks #omlyne .homepage-about-copy {
+	padding: 5rem;
+	background-color: var(--primary-color);
+	color: #fff;
+	font-size: 1.1rem;
+	font-weight: 300;
+	text-align: justify;
+}
+
+.homepage-blocks #omlyne .homepage-about-copy span {
+	text-decoration: underline;
+}
+
+.homepage-blocks #news {
+	max-width: 960px;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	text-align: center;
+}
+
+.homepage-blocks #news h2 {
+	color: var(--primary-color);
+	font-size: 1.6rem;
+	font-weight: 500;
+}
+
+.homepage-blocks #insta {
+	padding: 0 1rem 3rem;
+}
+
+@media only screen and (max-width: 781px) {
+	.homepage-blocks #basic-info .homepage-basic-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.homepage-blocks #omlyne .homepage-about-copy {
+		padding: 2rem;
+		font-size: 1rem;
+	}
+
+	.homepage-blocks #omlyne .homepage-about-grid > .wp-block-column {
+		flex-basis: 100%;
+		width: 100%;
+	}
+}
+@media only screen and (max-width: 768px) {
+    #omlyne .text {
+        padding:2rem;
+        font-size:1rem;
+    }
+}
+
+#news {
+	margin-top:5rem;
+	margin-bottom:7rem;
+	p {
+		font-weight:200;
+		font-size:1.6rem!important;
+		color:var(--primary-color);
+		span {
+			text-decoration: underline;
+		}
+		strong{
+			font-weight:500;
+
+		}
+	}
+	.prihlas{
+		font-weight:400;
+
+		}
+}
+
+#partners {
+	padding-top:2rem;
+	padding-bottom:2rem;
+}
+
+p{
+    margin-bottom:15px!important;
+}
+/* DETAIL AKCE */
+
+#tribe-events-pg-template {
+	max-width: unset!important;
+	padding:0;
+}
+
+.detail-akce {
+	.datum, h1{
+		color:var(--primary-color);
+	}
+
+	.datum {
+		font-size: 1.3rem;
+	}
+
+	h1 {
+		text-decoration: underline;
+		font-size:2.3rem;
+		margin-top:0.5rem;
+		margin-bottom:2rem;
+	}
+
+	.event-tag {
+		margin-right:10px;
+		position:relative;
+		top:-5px;
+	}
+
+	h5 {
+		margin-bottom:20px;
+				line-height:1.7rem;
+
+	}
+
+	p{
+		margin-bottom:20px;
+		font-weight: 300;
+		line-height:1.9rem;
+		font-size: 1.1rem;
+
+		strong {
+			font-weight:500;
+		}
+	}
+	.banner-wrapper{
+			background-size: cover;
+		min-height:350px;
+		color:white;
+		position:relative;
+		background-position: center center;
+	}
+
+	.detail-info {
+		background-color:var(--primary-color);
+		color:white;
+		padding:2rem 2.5rem 2.5rem 2.5rem;
+
+		p {
+			border-bottom:1px solid #efefef78;
+			margin-bottom:0;
+			padding-bottom:8px;
+			padding-top:8px;
+			font-size:1rem;
+			line-height: 1.5rem;
+			display:flex;
+		}
+		p:last-of-type{
+			border-bottom:0px;
+		}
+
+		strong {
+			font-weight:500;
+			margin-left:auto;
+
+		}
+		.btn {
+			background-color:#E96B76;
+			color:white;
+		}
+		.btn:hover {
+			background-color:rgb(216, 137, 144);
+			color:white!important;
+		}
+	}
+
+
+}
+
+.uvod:before {
+	content: '';
+	background-color:var(--light-color);
+	position:absolute;
+	width:106%;
+	top:-22%;
+	right:-3%;
+	height:400px;
+	z-index: -1;
+
+}
+.uvod {
+	position:relative;
+	padding-right:3rem;
+}
+.uvod * {
+	z-index:5;
+}
+
+
+.entry-header {
+    background-image: url('image/ptb.jpeg');
+    background-size:cover;
+
+    background-position: center center;
+    min-height: 250px;
+    position:relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.entry-header::before {
+    content:'';
+    position:absolute;
+    width:100%;
+    height:100%;
+    background-color: rgba(71, 104, 123,0.65);
+    top:0;
+    right:0;
+    z-index:20;
+}
+
+.entry-header h1 {
+    color: white;
+    font-size: 2.5rem;
+    position:relative;
+    z-index:30;
+    text-align: center;
+    text-transform: uppercase;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;}
+
+.velkymlyn-page-hero--slider {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.entry-header--plain {
+	min-height: auto;
+	padding: 2rem 1rem 1rem;
+	background-image: none !important;
+}
+
+.entry-header--plain::before {
+	display: none;
+}
+
+.entry-header--plain h1 {
+	color: var(--primary-color);
+}
+
+.bi-list{
+    font-size:1.5rem!important;
+    color:var(--primary-color);
+}
+
+.offcanvas-body{
+
+    ul{
+        margin-right:1rem;
+        list-style:none;
+
+        li{
+            padding-top:1rem;
+            padding-bottom:1rem;
+            border-bottom:1px solid #efefef;
+
+            a{
+                color:#849AA4!important;
+                font-weight: 500;
+            }
+            a:hover{
+                color:var(--primary-color)!important;
+            }
+        }
+
+        li:nth-child(8),li:last-child{
+            border-bottom:0px;
+            display:inline-block;
+            margin-left:10px;
+        }
+
+    }
+}
+
+.events-filter {
+	width: 100%;
+	margin: .75rem 0 2rem;
+	border: 1px solid #d5d9dc;
+	background: #fff;
+}
+
+.events-filter__summary {
+	display: flex !important;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	min-height: 3.25rem;
+	padding: .75rem 1rem !important;
+	color: var(--primary-color);
+	font-weight: 600;
+	cursor: pointer;
+	list-style: none;
+}
+
+.events-filter__summary::-webkit-details-marker {
+	display: none;
+}
+
+.events-filter__summary:hover {
+	background: var(--light-color);
+}
+
+.events-filter__summary:focus-visible {
+	outline: 2px solid var(--primary-color);
+	outline-offset: -2px;
+}
+
+.events-filter__summary-meta {
+	display: inline-flex;
+	align-items: center;
+	gap: .75rem;
+}
+
+.events-filter__count {
+	padding: .15rem .55rem !important;
+	border-radius: 999px;
+	background: var(--primary-color);
+	color: #fff;
+	font-size: .75rem;
+	font-weight: 500;
+}
+
+.events-filter__chevron--open,
+.events-filter__panel[open] .events-filter__chevron--closed {
+	display: none;
+}
+
+.events-filter__panel[open] .events-filter__chevron--open {
+	display: inline-block;
+}
+
+.events-filter__form {
+	padding: 1rem !important;
+	border-top: 1px solid #d5d9dc !important;
+}
+
+.events-filter__form fieldset {
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.events-filter__options {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: .5rem;
+}
+
+.events-filter__option {
+	display: flex;
+	align-items: center;
+	gap: .55rem;
+	min-height: 2.5rem;
+	margin: 0 !important;
+	padding: .45rem .65rem !important;
+	border: 1px solid #d5d9dc !important;
+	background: #fff !important;
+	color: var(--black-color) !important;
+	font-size: .85rem;
+	line-height: 1.25;
+	cursor: pointer;
+}
+
+.events-filter__option:hover {
+	border-color: var(--primary-color);
+	background: var(--light-color);
+}
+
+.events-filter__option--all {
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+.events-filter__option:has(input:checked) {
+	border-color: var(--primary-color);
+	background: var(--light-color);
+	color: var(--primary-color);
+	font-weight: 600;
+}
+
+.events-filter__option input {
+	flex: 0 0 auto;
+	width: 1rem;
+	height: 1rem;
+	margin: 0;
+	accent-color: var(--primary-color);
+}
+
+.events-filter__option:focus-within {
+	outline: 2px solid var(--primary-color);
+	outline-offset: 1px;
+}
+
+.events-filter__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 1rem;
+	margin-top: 1rem !important;
+}
+
+.tribe-events .tribe-events-c-search__button,
+.tribe-events .events-filter__submit {
+	border-color: var(--primary-color) !important;
+	background-color: var(--primary-color) !important;
+	color: #fff !important;
+	transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.tribe-events .tribe-events-c-search__button:hover,
+.tribe-events .events-filter__submit:hover {
+	border-color: color-mix(in srgb, var(--primary-color) 82%, #000) !important;
+	background-color: color-mix(in srgb, var(--primary-color) 82%, #000) !important;
+}
+
+.tribe-events .tribe-events-c-search__button:active,
+.tribe-events .events-filter__submit:active {
+	border-color: color-mix(in srgb, var(--primary-color) 68%, #000) !important;
+	background-color: color-mix(in srgb, var(--primary-color) 68%, #000) !important;
+}
+
+.tribe-events .tribe-events-c-search__button:focus-visible,
+.tribe-events .events-filter__submit:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: -4px;
+	box-shadow: 0 0 0 3px var(--primary-color);
+}
+
+.tribe-events .tribe-events-c-search__button:disabled,
+.tribe-events .events-filter__submit:disabled {
+	cursor: not-allowed;
+	opacity: .55;
+}
+
+.events-filter__clear {
+	color: var(--primary-color) !important;
+	font-size: .85rem;
+	font-weight: 600;
+	text-decoration: underline !important;
+	text-underline-offset: 3px;
+}
+
+@media screen and (max-width: 575px) {
+	.events-filter__options {
+		grid-template-columns: 1fr;
+	}
+}
+
+.tribe-events-calendar-list > h2:not(:first-of-type) {
+    margin-top: 2rem;
+}
+
+.tribe-events-calendar-list > .event-card:has(+ h2:not(:first-of-type)) {
+    border-bottom: none !important;
+}
+
+.sub-menu {
+	background-color: white;
+}
+
+.sub-menu > li {
+	padding: 3px 6px;
+}
+
+/*
+ * Keep desktop dropdowns flush with their parent item. A top offset greater
+ * than 100% creates a dead zone that closes the menu while the pointer crosses
+ * from the parent link to its submenu.
+ */
+@media screen and (min-width: 992px) {
+	.main-navigation #primary-menu .sub-menu {
+		top: 100%;
+		flex-direction: column;
+	}
+
+	.main-navigation #primary-menu li:focus-within > .sub-menu {
+		right: auto;
+	}
 }

@@ -4,8 +4,8 @@ Theme URI: https://velkymlyn.cz/
 Author: Honza Kopta
 Author URI: https://www.honzakopta.cz
 Description: Custom theme for the Velký mlýn cultural centre and library in Prague-Libeň.
-Version: 1.4.1
-Requires at least: 6.0
+Version: 1.5.0
+Requires at least: 6.7
 Tested up to: 7.0
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
@@ -1287,6 +1287,132 @@ h2{
 		span {
 			text-decoration: underline;
 		}
+	}
+}
+
+/* Curated Gutenberg homepage. */
+.homepage-blocks > .wp-block-group {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.homepage-blocks .homepage-section__inner,
+.homepage-blocks #banner,
+.homepage-blocks #omlyne,
+.homepage-blocks #insta {
+	max-width: 1600px;
+}
+
+.homepage-blocks #basic-info .homepage-section__inner {
+	padding: .5rem 2rem 1rem;
+	background-color: var(--light-color);
+}
+
+.homepage-blocks #basic-info h1 {
+	margin-bottom: 1.5rem;
+}
+
+.homepage-blocks #basic-info .homepage-basic-grid {
+	display: grid;
+	grid-template-columns: 3fr 4fr 3fr;
+	gap: 2rem;
+	max-width: 1100px;
+	margin: 0 auto;
+}
+
+.homepage-blocks #basic-info .nadpis {
+	margin-bottom: .4rem !important;
+	color: var(--primary-color);
+	font-weight: 500;
+}
+
+.homepage-blocks #program {
+	max-width: 1200px;
+	padding: 3rem 1rem 0;
+}
+
+.homepage-blocks #program > h2 {
+	margin-bottom: 1.5rem;
+}
+
+.homepage-blocks #program .wp-block-buttons {
+	margin-top: 3rem;
+}
+
+.homepage-blocks #program .wp-block-button__link {
+	border: 0;
+	color: var(--primary-color);
+	font-size: 1.6rem;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.homepage-blocks #omlyne .homepage-about-grid {
+	gap: 0;
+}
+
+.homepage-blocks #omlyne .homepage-about-grid > .wp-block-column {
+	box-sizing: border-box;
+	flex: 0 0 50%;
+	width: 50%;
+}
+
+.homepage-blocks #omlyne .homepage-about-grid > .wp-block-column:first-child {
+	padding-right: 12px;
+	padding-left: 12px;
+}
+
+.homepage-blocks #omlyne .homepage-about-image,
+.homepage-blocks #omlyne .homepage-about-image img {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	object-fit: cover;
+}
+
+.homepage-blocks #omlyne .homepage-about-copy {
+	padding: 5rem;
+	background-color: var(--primary-color);
+	color: #fff;
+	font-size: 1.1rem;
+	font-weight: 300;
+	text-align: justify;
+}
+
+.homepage-blocks #omlyne .homepage-about-copy span {
+	text-decoration: underline;
+}
+
+.homepage-blocks #news {
+	max-width: 960px;
+	padding-right: 1rem;
+	padding-left: 1rem;
+	text-align: center;
+}
+
+.homepage-blocks #news h2 {
+	color: var(--primary-color);
+	font-size: 1.6rem;
+	font-weight: 500;
+}
+
+.homepage-blocks #insta {
+	padding: 0 1rem 3rem;
+}
+
+@media only screen and (max-width: 781px) {
+	.homepage-blocks #basic-info .homepage-basic-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.homepage-blocks #omlyne .homepage-about-copy {
+		padding: 2rem;
+		font-size: 1rem;
+	}
+
+	.homepage-blocks #omlyne .homepage-about-grid > .wp-block-column {
+		flex-basis: 100%;
+		width: 100%;
 	}
 }
 @media only screen and (max-width: 768px) {

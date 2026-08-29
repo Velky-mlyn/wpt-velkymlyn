@@ -1,10 +1,10 @@
 === Velký mlýn ===
 
 Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
-Requires at least: 6.0
+Requires at least: 6.7
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.4.1
+Stable tag: 1.5.0
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,22 +16,22 @@ Project contact: pk@velkymlyn.cz
 == Description ==
 
 Velký mlýn is a custom, standalone theme based on Underscores. It provides the
-public website layout, a tailored homepage, event listings, event-detail
+public website layout, a curated block-editable homepage, event listings, event-detail
 templates, navigation, partner information, and integration points for the
 site's companion plugins.
 
 The Events Calendar and Advanced Custom Fields are required for the event
 features. Mlýn Configurable Footer manages the shared contacts and partner
-logos. The homepage can additionally display Mlýn Flexible Slider, Social Feed
-Gallery, and MailPoet content when those plugins and configured shortcodes are
-available.
+logos. The homepage uses native blocks supplied by Mlýn Flexible Slider,
+Mlýn Social Feed Curator, MailPoet, and the theme's calendar integration.
 
 == Installation ==
 
 1. Upload the theme ZIP under Appearance > Themes > Add New > Upload Theme, or copy the `velkymlyn` directory to `wp-content/themes`.
 2. Install and activate The Events Calendar and Advanced Custom Fields.
 3. Activate the Velký mlýn theme.
-4. Assign the primary navigation menu and verify the homepage shortcode IDs.
+4. Assign the primary navigation menu and choose a static front page.
+5. Insert the **Velký mlýn homepage** pattern on that page when migrating an existing installation.
 
 == Frequently Asked Questions ==
 
@@ -48,6 +48,13 @@ installation notes, credits, and the changelog. The theme metadata displayed
 by WordPress comes from the header in style.css.
 
 == Changelog ==
+
+= 1.5.0 - 2026-08-29 =
+
+* Moved homepage text, images, and section order into the native block editor.
+* Added a curated, content-only homepage pattern with protected internal layouts.
+* Added a server-rendered upcoming-events block and editor-specific styling.
+* Added theme.json design constraints and a homepage-specific block allowlist.
 
 = 1.4.1 - 2026-08-28 =
 
