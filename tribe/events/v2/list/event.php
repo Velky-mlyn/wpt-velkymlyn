@@ -11,22 +11,27 @@
 		}
         $event_link = get_permalink($event_id);
         $event_categories = get_the_terms($event_id, 'tribe_events_cat');
-		$event_tags = get_the_terms( $event_id, 'post_tag');
-        ?>
+			$event_tags = get_the_terms( $event_id, 'post_tag');
+			$occupancy = velkymlyn_get_event_occupancy( $event_id );
+	        ?>
 
-        <div class="event-card d-flex flex-wrap align-items-center border-bottom pt-1 pb-1 mb-0">
+	        <div class="event-card d-flex flex-wrap align-items-center pt-2 pb-2 mb-2 mt-2<?php echo $occupancy['fully_occupied'] ? ' event-card--fully-occupied' : ''; ?>">
 			<div class="row align-items-center justify-content-center">
-				<div class="event-date text-start col-lg-2 col-12 mb-3">
+				<div class="event-date text-start col-lg-2 col-12 pl-3 pr-3">
 					<?php echo $event_schedule; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</div>
 
-				<div class="event-image pe-4 p-3 col-lg-3 col-12">
-					<?= $event_image ?>
-				</div>
+					<?php if ( $occupancy['fully_occupied'] ) : ?>
+						<div class="event-occupancy-note p-3 col-lg-3 col-12"><?php echo nl2br( esc_html( $occupancy['note'] ) ); ?></div>
+					<?php else : ?>
+						<div class="event-image pe-4 p-3 col-lg-3 col-12">
+							<?= $event_image ?>
+						</div>
+					<?php endif; ?>
 
             <div class="event-content ps-lg-4 col-lg-7 col-12" >
 
-            <?php if ( ! empty( $event_tags ) && ! is_wp_error( $event_tags ) ) : ?>
+	            <?php if ( ! $occupancy['fully_occupied'] && ! empty( $event_tags ) && ! is_wp_error( $event_tags ) ) : ?>
                 <div class="event-tags mb-2">
                     <?php foreach ( $event_tags as $tag ) : 
                         // Načti barvu z ACF (pole pojmenuj např. "tag_color")
@@ -47,12 +52,14 @@
                     </a>
                 </h3>
 
-                <div class="d-md-none event-description text-muted">
-                    <?= esc_html($event_excerpt_mobile) ?>
-                </div>
-                <div class="d-none d-lg-flex event-description text-muted">
-                    <?= esc_html($event_excerpt) ?>
-                </div>
+	                <?php if ( ! $occupancy['fully_occupied'] ) : ?>
+	                    <div class="d-md-none event-description text-muted">
+	                        <?= esc_html($event_excerpt_mobile) ?>
+	                    </div>
+	                    <div class="d-none d-lg-flex event-description text-muted">
+	                        <?= esc_html($event_excerpt) ?>
+	                    </div>
+	                <?php endif; ?>
             </div>
 
 			</div>

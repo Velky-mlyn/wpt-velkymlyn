@@ -10,8 +10,13 @@ $ticket_link = get_field('ticket_link');
 $background_image = get_the_post_thumbnail_url(get_the_ID(), 'full');
 $ticket_price = tribe_get_cost( get_the_ID(), true ); // true = include currency symbol
 if(!$ticket_price){
-    $ticket_price = 'Zdarma';
+	$ticket_price = 'Zdarma';
 }
+$event_capacity_is_set  = metadata_exists( 'post', $event_id, '_mlyn_event_capacity' );
+$event_available_is_set = metadata_exists( 'post', $event_id, '_mlyn_event_available_places' );
+$event_capacity         = $event_capacity_is_set ? (int) get_post_meta( $event_id, '_mlyn_event_capacity', true ) : null;
+$event_available        = $event_available_is_set ? (int) get_post_meta( $event_id, '_mlyn_event_available_places', true ) : null;
+$event_occupancy_note   = (string) get_post_meta( $event_id, '_mlyn_event_occupancy_note', true );
 
 $event_cats = get_the_terms($event_id, 'tribe_events_cat'); // 💡 Kategorie akce
 
@@ -66,7 +71,16 @@ if ( $event_cats && ! is_wp_error($event_cats) ) {
                 <p><strong>Čas:</strong> <?php echo esc_html($start_time); ?></p>
                 <p><strong>Místo:</strong> <?php echo esc_html($event_categories_output); ?></p>
                 <p><strong>Vstupné:</strong> <?php echo esc_html($ticket_price); ?></p>
-                                <?php
+                <?php if ( $event_capacity_is_set ) : ?>
+                    <p><strong>Kapacita:</strong> <?php echo esc_html( (string) $event_capacity ); ?></p>
+                <?php endif; ?>
+                <?php if ( $event_available_is_set ) : ?>
+                    <p><strong>Volná místa:</strong> <?php echo 0 === $event_available ? '<span class="event-occupancy-full">Obsazeno</span>' : esc_html( (string) $event_available ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+                <?php endif; ?>
+                <?php if ( '' !== $event_occupancy_note ) : ?>
+                    <p class="event-occupancy-note-detail"><strong>Poznámka:</strong> <span><?php echo nl2br( esc_html( $event_occupancy_note ) ); ?></span></p>
+                <?php endif; ?>
+                <?php
                     $website = tribe_get_event_website_url( get_the_ID() );
                     if ( $website ) {?>
                 <div class="row mt-3 justify-content-between align-items-center">

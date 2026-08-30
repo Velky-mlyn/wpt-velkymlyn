@@ -4,7 +4,7 @@ Theme URI: https://velkymlyn.cz/
 Author: Honza Kopta
 Author URI: https://www.honzakopta.cz
 Description: Custom theme for the Velký mlýn cultural centre and library in Prague-Libeň.
-Version: 1.5.0
+Version: 1.6.0
 Requires at least: 6.7
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -1089,6 +1089,8 @@ a:hover {
 
 .event-date {
   text-align: left;
+  padding-right: 1rem;
+  padding-left: 1rem;
 
   .datum {
 	font-weight: 500!important;
@@ -1170,7 +1172,31 @@ display: block;
 .event-description {
   font-size: 1rem;
   color: var(--black-color)!important;
-  
+
+}
+
+.event-card--fully-occupied {
+	background-color: var(--light-color);
+}
+
+.event-card--fully-occupied > .row {
+	width: 100%;
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.event-card--fully-occupied .event-date,
+.event-card--fully-occupied .event-date *,
+.event-card--fully-occupied .event-content,
+.event-card--fully-occupied .event-title a,
+.event-card--fully-occupied .event-occupancy-note {
+	color: var(--primary-color) !important;
+	font-weight: 200 !important;
+}
+
+.event-occupancy-note {
+	font-size: 1.1rem;
+	line-height: 1.4;
 }
 
 .event-tag {
@@ -1539,7 +1565,15 @@ p{
 		}
 	}
 
-	
+	.event-occupancy-full {
+		font-weight: 700;
+	}
+
+	.event-occupancy-note-detail span {
+		text-align: right;
+	}
+
+
 }
 
 .uvod:before {
