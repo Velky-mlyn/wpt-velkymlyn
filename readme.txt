@@ -4,7 +4,7 @@ Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-com
 Requires at least: 6.7
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.5.0
+Stable tag: 1.7.0
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,17 @@ installation notes, credits, and the changelog. The theme metadata displayed
 by WordPress comes from the header in style.css.
 
 == Changelog ==
+
+= 1.7.0 - 2026-08-30 =
+
+* Added per-event focal-point positioning for featured images on event detail banners.
+* Kept the existing centred crop as the fallback when no focal point is configured or Mlýn Event is unavailable.
+
+= 1.6.0 - 2026-08-30 =
+
+* Added capacity, available-place, and occupancy-note information to event detail pages.
+* Added a dedicated fully-occupied event-card presentation to List View and homepage event listings.
+* Replaced the image with the occupancy note on fully-occupied cards while retaining the event date and title.
 
 = 1.5.0 - 2026-08-29 =
 

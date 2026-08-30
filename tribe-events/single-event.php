@@ -8,6 +8,11 @@ $start_time = tribe_get_start_date($event_id, false, 'H:i');
 $event_tags = get_the_terms( $event_id, 'post_tag');
 $ticket_link = get_field('ticket_link');
 $background_image = get_the_post_thumbnail_url(get_the_ID(), 'full');
+$image_focal_point = function_exists( 'mlyn_event_get_image_focal_point' )
+	? mlyn_event_get_image_focal_point( $event_id )
+	: array( 'x' => 50, 'y' => 50 );
+$image_focal_x = max( 0, min( 100, (int) ( $image_focal_point['x'] ?? 50 ) ) );
+$image_focal_y = max( 0, min( 100, (int) ( $image_focal_point['y'] ?? 50 ) ) );
 $ticket_price = tribe_get_cost( get_the_ID(), true ); // true = include currency symbol
 if(!$ticket_price){
 	$ticket_price = 'Zdarma';
@@ -52,8 +57,8 @@ if ( $event_cats && ! is_wp_error($event_cats) ) {
             <h1><?php the_title(); ?></h1>
             </div>
             <?php if (has_post_thumbnail()): ?>
-                <div class="banner-wrapper col-12 text-center align-items-center d-flex flex-column justify-content-center" 
-							style="background-image: url('<?php echo esc_url($background_image); ?>');">
+                <div class="banner-wrapper col-12 text-center align-items-center d-flex flex-column justify-content-center"
+							style="background-image: url('<?php echo esc_url($background_image); ?>'); background-position: <?php echo esc_attr( $image_focal_x . '% ' . $image_focal_y . '%' ); ?>;">
             </div>
             <?php endif; ?>
         </div>
