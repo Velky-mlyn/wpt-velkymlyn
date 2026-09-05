@@ -215,9 +215,11 @@ add_action( 'after_setup_theme', function() {
  * cannot be mistaken for a same-day time range.
  *
  * @param int|WP_Post $event Event ID or post object.
+ * @param bool $show_weekdays Whether to include weekday names.
+ * @param bool $compact_single_day Render a single-day date and time on one line.
  * @return string
  */
-function velkymlyn_get_event_schedule_html( $event ) {
+function velkymlyn_get_event_schedule_html( $event, $show_weekdays = true, $compact_single_day = false ) {
 	$event_id = is_object( $event ) && isset( $event->ID ) ? (int) $event->ID : absint( $event );
 	if ( ! $event_id ) {
 		return '';
@@ -235,9 +237,14 @@ function velkymlyn_get_event_schedule_html( $event ) {
 		$event_day  = tribe_get_start_date( $event_id, false, 'l' );
 		$event_date = tribe_get_start_date( $event_id, false, 'j.n.' );
 		?>
-		<div class="text-lowercase fw-normal"><?php echo esc_html( $event_day ); ?></div>
-		<div class="datum fs-2"><time datetime="<?php echo esc_attr( $start_day ); ?>"><?php echo esc_html( $event_date ); ?></time></div>
-		<div class="small">
+		<?php if ( $show_weekdays ) : ?><div class="text-lowercase fw-normal"><?php echo esc_html( $event_day ); ?></div><?php endif; ?>
+		<?php if ( ! $compact_single_day ) : ?>
+			<div class="datum fs-2"><time datetime="<?php echo esc_attr( $start_day ); ?>"><?php echo esc_html( $event_date ); ?></time></div>
+		<?php endif; ?>
+		<div class="small<?php echo $compact_single_day ? ' event-date__single-line' : ''; ?>">
+			<?php if ( $compact_single_day ) : ?>
+				<time datetime="<?php echo esc_attr( $start_day ); ?>"><?php echo esc_html( $event_date ); ?></time>
+			<?php endif; ?>
 			<?php if ( $is_all_day ) : ?>
 				<?php esc_html_e( 'Celý den', 'velkymlyn' ); ?>
 			<?php else : ?>
@@ -255,7 +262,7 @@ function velkymlyn_get_event_schedule_html( $event ) {
 	$start_date    = tribe_get_start_date( $event_id, false, 'j. n. Y' );
 	$end_date      = tribe_get_end_date( $event_id, false, 'j. n. Y' );
 	?>
-	<div class="event-date__weekdays text-lowercase fw-normal"><?php echo esc_html( $start_weekday . ' – ' . $end_weekday ); ?></div>
+	<?php if ( $show_weekdays ) : ?><div class="event-date__weekdays text-lowercase fw-normal"><?php echo esc_html( $start_weekday . ' – ' . $end_weekday ); ?></div><?php endif; ?>
 	<div class="event-date__range">
 		<div class="event-date__boundary">
 			<span class="event-date__label"><?php esc_html_e( 'Od', 'velkymlyn' ); ?></span>
@@ -291,6 +298,18 @@ function velkymlyn_get_event_occupancy( $event_id ) {
 	);
 }
 
+/**
+ * Render the event location using the same categories as the detail page.
+ */
+function velkymlyn_get_event_location_html( $event_id ) {
+	$locations = get_the_terms( $event_id, 'tribe_events_cat' );
+	if ( empty( $locations ) || is_wp_error( $locations ) ) {
+		return '';
+	}
+
+	return '<span class="event-location"><i class="bi bi-geo-alt" aria-hidden="true"></i><span><span class="screen-reader-text">' . esc_html__( 'Místo:', 'velkymlyn' ) . ' </span>' . esc_html( implode( ', ', wp_list_pluck( $locations, 'name' ) ) ) . '</span></span>';
+}
+
 function velkymlyn_render_upcoming_events() {
     $output = '';
     $events = tribe_get_events([
@@ -307,7 +326,8 @@ function velkymlyn_render_upcoming_events() {
 
     foreach ($events as $event) {
         $event_id = $event->ID;
-		$event_schedule = velkymlyn_get_event_schedule_html( $event );
+		$occupancy = velkymlyn_get_event_occupancy( $event_id );
+		$event_schedule = velkymlyn_get_event_schedule_html( $event, ! $occupancy['fully_occupied'], $occupancy['fully_occupied'] );
         $event_title = get_the_title($event_id);
 		$event_excerpt = wp_trim_words( get_the_excerpt( $event_id ), 20, '...' );
         $event_excerpt_mobile = wp_trim_words( get_the_excerpt( $event_id ), 5, '...' );
@@ -317,9 +337,8 @@ function velkymlyn_render_upcoming_events() {
 			$event_image = sprintf( '<img width="600" height="400" src="%s" class="img-fluid wp-post-image" alt="" decoding="async" fetchpriority="high">', esc_url( get_theme_file_uri( '/image/placeholder.jpg' ) ) );
 		}
         $event_link = get_permalink($event_id);
-        $event_categories = get_the_terms($event_id, 'tribe_events_cat');
+        $event_location = velkymlyn_get_event_location_html( $event_id );
 			$event_tags = get_the_terms( $event_id, 'post_tag');
-			$occupancy = velkymlyn_get_event_occupancy( $event_id );
 	        ?>
 
 	        <div class="event-card d-flex flex-wrap align-items-center pt-2 pb-2 mb-2 mt-2<?php echo $occupancy['fully_occupied'] ? ' event-card--fully-occupied' : ''; ?>">
@@ -338,8 +357,11 @@ function velkymlyn_render_upcoming_events() {
 
             <div class="event-content ps-lg-4 col-lg-7 col-12" >
 
-	            <?php if ( ! $occupancy['fully_occupied'] && ! empty( $event_tags ) && ! is_wp_error( $event_tags ) ) : ?>
-                <div class="event-tags mb-2">
+                <?php if ( ! $occupancy['fully_occupied'] ) : ?>
+                <div class="event-card-meta mb-2">
+                    <?php echo $event_location; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                    <?php if ( ! empty( $event_tags ) && ! is_wp_error( $event_tags ) ) : ?>
+                <div class="event-tags">
                     <?php foreach ( $event_tags as $tag ) : 
                         // Načti barvu z ACF (pole pojmenuj např. "tag_color")
                         $tag_color = get_field( 'barva_stitku', 'term_' . $tag->term_id ); 
@@ -350,14 +372,20 @@ function velkymlyn_render_upcoming_events() {
                         </div>
                     <?php endforeach; ?>
                 </div>
-            <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+                <?php endif; ?>
 
-
+                <div class="event-card-heading">
                 <h3 class="event-title d-block mb-1">
                     <a href="<?= esc_url($event_link) ?>">
                         <?= esc_html($event_title) ?>
                     </a>
                 </h3>
+                    <?php if ( $occupancy['fully_occupied'] ) : ?>
+                        <?php echo $event_location; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                    <?php endif; ?>
+                </div>
 
 	                <?php if ( ! $occupancy['fully_occupied'] ) : ?>
 	                    <div class="d-md-none event-description text-muted">

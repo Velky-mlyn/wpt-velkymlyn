@@ -1,6 +1,7 @@
 <?php
   $event_id = $event->ID;
-		$event_schedule = velkymlyn_get_event_schedule_html( $event );
+		$occupancy = velkymlyn_get_event_occupancy( $event_id );
+		$event_schedule = velkymlyn_get_event_schedule_html( $event, ! $occupancy['fully_occupied'], $occupancy['fully_occupied'] );
         $event_title = get_the_title($event_id);
 		$event_excerpt = wp_trim_words( get_the_excerpt( $event_id ), 20, '...' );
         $event_excerpt_mobile = wp_trim_words( get_the_excerpt( $event_id ), 5, '...' );
@@ -10,9 +11,8 @@
 			$event_image = sprintf( '<img width="600" height="400" src="%s" class="img-fluid wp-post-image" alt="" decoding="async" fetchpriority="high">', esc_url( get_theme_file_uri( '/image/placeholder.jpg' ) ) );
 		}
         $event_link = get_permalink($event_id);
-        $event_categories = get_the_terms($event_id, 'tribe_events_cat');
+        $event_location = velkymlyn_get_event_location_html( $event_id );
 			$event_tags = get_the_terms( $event_id, 'post_tag');
-			$occupancy = velkymlyn_get_event_occupancy( $event_id );
 	        ?>
 
 	        <div class="event-card d-flex flex-wrap align-items-center pt-2 pb-2 mb-2 mt-2<?php echo $occupancy['fully_occupied'] ? ' event-card--fully-occupied' : ''; ?>">
@@ -31,8 +31,11 @@
 
             <div class="event-content ps-lg-4 col-lg-7 col-12" >
 
-	            <?php if ( ! $occupancy['fully_occupied'] && ! empty( $event_tags ) && ! is_wp_error( $event_tags ) ) : ?>
-                <div class="event-tags mb-2">
+                <?php if ( ! $occupancy['fully_occupied'] ) : ?>
+                <div class="event-card-meta mb-2">
+                    <?php echo $event_location; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                    <?php if ( ! empty( $event_tags ) && ! is_wp_error( $event_tags ) ) : ?>
+                <div class="event-tags">
                     <?php foreach ( $event_tags as $tag ) : 
                         // Načti barvu z ACF (pole pojmenuj např. "tag_color")
                         $tag_color = get_field( 'barva_stitku', 'term_' . $tag->term_id ); 
@@ -43,14 +46,20 @@
                         </div>
                     <?php endforeach; ?>
                 </div>
-            <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+                <?php endif; ?>
 
-
+                <div class="event-card-heading">
                 <h3 class="event-title d-block mb-1">
                     <a href="<?= esc_url($event_link) ?>">
                         <?= esc_html($event_title) ?>
                     </a>
                 </h3>
+                    <?php if ( $occupancy['fully_occupied'] ) : ?>
+                        <?php echo $event_location; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                    <?php endif; ?>
+                </div>
 
 	                <?php if ( ! $occupancy['fully_occupied'] ) : ?>
 	                    <div class="d-md-none event-description text-muted">

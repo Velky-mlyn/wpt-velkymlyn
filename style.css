@@ -1097,6 +1097,13 @@ a:hover {
   }
 }
 
+.event-date__single-line {
+	display: flex;
+	align-items: baseline;
+	gap: 0.35rem;
+	white-space: nowrap;
+}
+
 .event-date__weekdays {
 	font-size: .85rem;
 }
@@ -1125,7 +1132,7 @@ a:hover {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
-	justify-content: space-around;
+	justify-content: flex-end;
 	gap: .1rem .4rem;
 	font-size: .9rem;
 	font-weight: 500;
@@ -1175,7 +1182,8 @@ display: block;
 
 }
 
-.event-card--fully-occupied {
+.event-card.event-card--fully-occupied {
+	padding-inline: 1rem;
 	background-color: var(--light-color);
 }
 
@@ -1185,8 +1193,29 @@ display: block;
 	margin-left: 0;
 }
 
+.event-card--fully-occupied > .row > .event-date {
+	padding-inline: 0;
+}
+
+.event-card--fully-occupied .event-card-heading {
+	align-items: center;
+}
+
+.event-card--fully-occupied .event-card-heading .event-location {
+	margin-left: auto;
+	text-align: right;
+}
+
+.event-card--fully-occupied .event-title,
+.event-card--fully-occupied .event-title a {
+	margin: 0 !important;
+}
+
 .event-card--fully-occupied .event-date,
-.event-card--fully-occupied .event-date *,
+.event-card--fully-occupied .event-date * {
+	color: var(--primary-color) !important;
+}
+
 .event-card--fully-occupied .event-content,
 .event-card--fully-occupied .event-title a,
 .event-card--fully-occupied .event-occupancy-note {
@@ -1194,9 +1223,111 @@ display: block;
 	font-weight: 200 !important;
 }
 
+/* Keep the schedule intact; let the title column use the remaining space. */
+.event-card > .row {
+	display: grid;
+	grid-template-columns: minmax(11rem, max-content) minmax(10rem, 24%) minmax(0, 1fr);
+	align-items: center;
+	width: 100%;
+	margin-inline: 0;
+}
+
+.event-card > .row > .event-date,
+.event-card > .row > .event-image,
+.event-card > .row > .event-occupancy-note,
+.event-card > .row > .event-content {
+	width: auto;
+	min-width: 0;
+}
+
+.event-card > .row > .event-date {
+	padding-inline: 0;
+	white-space: nowrap;
+}
+
+.event-card .event-date__boundary time {
+	flex-wrap: nowrap;
+	white-space: nowrap;
+}
+
+.event-card .event-title {
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+.event-card--fully-occupied .event-card-heading {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 0.5rem 0.75rem;
+}
+
+.event-card--fully-occupied .event-location {
+	max-width: 100%;
+	overflow-wrap: anywhere;
+}
+
+@media (max-width: 767.98px) {
+	.event-card > .row {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.75rem;
+	}
+
+	.event-card > .row > .event-date {
+		width: max-content;
+		max-width: 100%;
+	}
+
+	.event-card > .row > .event-content,
+	.event-card > .row > .event-image,
+	.event-card > .row > .event-occupancy-note {
+		padding: 0 !important;
+	}
+
+	.event-card--fully-occupied > .row {
+		padding-block: 0.5rem;
+	}
+
+	.event-card--fully-occupied .event-card-heading {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.event-card--fully-occupied .event-card-heading .event-location {
+		margin-left: 0;
+		justify-self: start;
+		text-align: left;
+	}
+
+	.event-card--fully-occupied .event-occupancy-note:empty {
+		display: none;
+	}
+}
+
+.event-date__single-line > time:first-child {
+	font-weight: 500;
+}
+
 .event-occupancy-note {
 	font-size: 1.1rem;
 	line-height: 1.4;
+}
+
+.event-card-meta,
+.event-card-heading {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	column-gap: 0.75rem;
+}
+
+.event-location {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.3rem;
+	font-size: 0.9rem;
+}
+
+.event-location .bi {
+	flex-shrink: 0;
 }
 
 .event-tag {
