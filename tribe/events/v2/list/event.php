@@ -15,21 +15,21 @@
 			$event_tags = get_the_terms( $event_id, 'post_tag');
 	        ?>
 
-	        <div class="event-card d-flex flex-wrap align-items-center pt-2 pb-2 mb-2 mt-2<?php echo $occupancy['fully_occupied'] ? ' event-card--fully-occupied' : ''; ?>">
+	        <div class="event-card d-flex flex-wrap align-items-center<?php echo $occupancy['fully_occupied'] ? ' event-card--fully-occupied' : ''; ?>">
 			<div class="row align-items-center justify-content-center">
-				<div class="event-date text-start col-lg-2 col-12 pl-3 pr-3">
+				<div class="event-date text-start col-lg-2 col-12">
 					<?php echo $event_schedule; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</div>
 
 					<?php if ( $occupancy['fully_occupied'] ) : ?>
-						<div class="event-occupancy-note p-3 col-lg-3 col-12"><?php echo nl2br( esc_html( $occupancy['note'] ) ); ?></div>
+						<div class="event-occupancy-note col-lg-3 col-12"><?php echo nl2br( esc_html( $occupancy['note'] ) ); ?></div>
 					<?php else : ?>
-						<div class="event-image pe-4 p-3 col-lg-3 col-12">
+						<div class="event-image col-lg-3 col-12">
 							<?= $event_image ?>
 						</div>
 					<?php endif; ?>
 
-            <div class="event-content ps-lg-4 col-lg-7 col-12" >
+            <div class="event-content col-lg-7 col-12" >
 
                 <?php if ( ! $occupancy['fully_occupied'] ) : ?>
                 <div class="event-card-meta mb-2">
